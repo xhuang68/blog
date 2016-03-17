@@ -1,0 +1,24 @@
+# Permalinks
+#
+# Use of `relative_permalinks` ensures post links from the index work properly.
+permalink:           pretty
+# relative_permalinks: true
+
+# Setup
+title:               Xiao
+tagline:             '黄'
+description:         'Stay hungry. Stay foolish.<br/>半路出家，自学还未成才。'
+url:                 http://xiaohuang.rocks
+baseurl:             ''
+paginate:            5
+gems:                [jekyll-paginate]
+
+# About/contact
+author:
+  name:              Xiao Huang
+  url:               http://weibo.com/henryhuang1989
+  email:             henryhuang1989@gmail.com
+
+# Custom vars
+version:             1.0.0
+highlighter:         rouge

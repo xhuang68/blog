@@ -1,0 +1,24 @@
+---
+layout: default
+title: Archive
+---
+
+<h2 class="tag-music" style="margin-bottom:1em">Music · 音乐</h2>
+
+<div class="posts">
+  {% for post in site.posts %}
+    {% if post.tag == "Music · 音乐" %}
+    <div class="a-post">
+      <div style="float: left;">
+        <a class="a-post-title" href="{{ post.url }}">
+          {{ post.title }}
+        </a>
+      </div>
+      <div style="float: right">
+        <span class="a-post-date">{{ post.date | date_to_string }}</span>
+      </div>
+      <div style="clear: both;"></div>
+    </div>
+    {% endif %}
+    {% endfor %}
+</div>

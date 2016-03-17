@@ -1,0 +1,41 @@
+---
+layout: default
+title: Archive
+---
+<!--
+<div class="posts">
+  {% for post in site.posts %}
+  <div class="a-post">
+    <div style="float: left;">
+      <a class="a-post-title" href="{{ post.url }}">
+        {{ post.title }}
+      </a>
+    </div>
+  <div style="float: right">
+    <span class="a-post-date">{{ post.date | date_to_string }}</span>
+  </div>
+  <div style="clear: both;"></div>
+  </div>
+  {% endfor %}
+</div>
+-->
+<div id="archive">
+  {%for post in site.posts %}
+      {% capture year %}{{ post.date | date: '%Y' }}{% endcapture %}
+      {% capture nyear %}{{ post.next.date | date: '%Y' }}{% endcapture %}
+      {% if year != nyear %}
+        <p class="a-post-title" style="color:#2A8DD2; margin-top:3em;">{{ post.date | date: '%Y' }}</p>
+      {% endif %}
+      <div class="a-post">
+        <div style="float: left;">
+          <a class="a-post-title" href="{{ post.url }}">
+            {{ post.title }}
+          </a>
+        </div>
+        <div style="float: right">
+          <span class="a-post-date">{{ post.date | date_to_string }}</span>
+        </div>
+        <div style="clear: both;"></div>
+      </div>
+  {% endfor %}
+</div>
