@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      在 markdown 中使用网易云音乐外链播放器 &middot; Xiao
+    
+  </title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/font-awesome-4.4.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/public/css/poole.css">
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/css/lanyon.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Serif:400,400italic,700%7CPT+Sans:400">
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-precomposed.png">
+  <link rel="shortcut icon" href="/public/favicon.ico">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+</head>
+
+
+  <body>
+
+    <!-- Target for toggling the sidebar `.sidebar-checkbox` is for regular
+     styles, `#sidebar-checkbox` for behavior. -->
+<input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox">
+
+<!-- Toggleable sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-item">
+    <p>Stay hungry. Stay foolish.<br/>半路出家，自学还未成才。</p>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="sidebar-nav-item" href="/"><i class="fa fa-home fa-fw"></i><span style="margin-left:2em">Home</span></a>
+
+  <!--
+    
+
+    
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+    
+      
+        
+      
+    
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+  -->
+
+    <a class="sidebar-nav-item" href="/archive"><i class="fa fa-archive fa-fw"></i><span style="margin-left:2em">Achive</span></a>
+    <a class="sidebar-nav-item" href="/tag"><i class="fa fa-tags fa-fw"></i><span style="margin-left:2em">Tags</span></a>
+    <a class="sidebar-nav-item" href="/about"><i class="fa fa-user fa-fw"></i><span style="margin-left:2em">About</span></a>
+    <a class="sidebar-nav-item" href="http://xiaohuang.me"><i class="fa fa-paperclip fa-fw"></i><span style="margin-left:2em">Resume</span></a>
+    <a class="sidebar-nav-item" href="https://github.com/xhuang68/xhuang68.github.io"><i class="fa fa-cog fa-spin fa-fw"></i><span style="margin-left:2em">Source</span></a>
+  </nav>
+
+  <div class="sidebar-item">
+    <p>&copy; 2016 Xiao Huang. <br/>All rights reserved.</p>
+  </div>
+</div>
+
+
+    <!-- Wrap is the content to shift when toggling the sidebar. We wrap the
+         content to avoid any CSS collisions with our real content. -->
+    <div class="wrap">
+      <div class="masthead">
+        <div class="container">
+          <h3 class="masthead-title">
+            <a href="/" title="Home">Xiao</a>
+            <small>黄</small>
+          </h3>
+        </div>
+      </div>
+
+      <div class="container content">
+        <div class="post">
+  <h1 class="post-title">在 markdown 中使用网易云音乐外链播放器</h1>
+  
+    <span class="post-tag"><span class="tag-tech"><a href="/tags/tech">Tech · 技术</a></span></span>
+  
+  
+  
+  
+  
+  
+  
+  <span class="post-date">06 Oct 2015</span>
+  <h3 id="section">概述</h3>
+<p>网易云音乐有两种外链播放器插件。</p>
+
+<p>一种是 iframe，像这样：</p>
+
+<figure class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;iframe</span> <span class="na">frameborder=</span><span class="s">"no"</span> <span class="na">border=</span><span class="s">"0"</span> <span class="na">marginwidth=</span><span class="s">"0"</span> <span class="na">marginheight=</span><span class="s">"0"</span> <span class="na">width=</span><span class="s">330</span> <span class="na">height=</span><span class="s">86</span> <span class="na">src=</span><span class="s">"http://music.163.com/outchain/player?type=2&amp;id=29734857&amp;auto=1&amp;height=66"</span><span class="nt">&gt;&lt;/iframe&gt;</span>   </code></pre></figure>
+
+<p>另一种是 flash 插件，像这样：</p>
+
+<figure class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;embed</span> <span class="na">src=</span><span class="s">"http://music.163.com/style/swf/widget.swf?sid=29734857&amp;type=2&amp;auto=1&amp;width=320&amp;height=66"</span> <span class="na">width=</span><span class="s">"340"</span> <span class="na">height=</span><span class="s">"86"</span>  <span class="na">allowNetworking=</span><span class="s">"all"</span><span class="nt">&gt;&lt;/embed&gt;</span></code></pre></figure>
+
+<h3 id="section-1">使用</h3>
+<p>如今很多平台都不支持 flash 了，所以我使用的是 iframe。</p>
+
+<p>直接使用 iframe 是会直接显示出代码，而不会显示播放器的，需要把 iframe 的<code class="highlighter-rouge">width</code>和<code class="highlighter-rouge">height</code>标签的值加上双引号，另外我将自动播放的选项关掉了，就像这样：</p>
+
+<figure class="highlight"><pre><code class="language-html" data-lang="html"><span class="nt">&lt;iframe</span> <span class="na">frameborder=</span><span class="s">"no"</span> <span class="na">border=</span><span class="s">"0"</span> <span class="na">marginwidth=</span><span class="s">"0"</span> <span class="na">marginheight=</span><span class="s">"0"</span> <span class="na">width=</span><span class="s">"330"</span> <span class="na">height=</span><span class="s">"86"</span> <span class="na">src=</span><span class="s">"http://music.163.com/outchain/player?type=2&amp;id=29734857&amp;auto=0&amp;height=66"</span><span class="nt">&gt;&lt;/iframe&gt;</span></code></pre></figure>
+
+<p>效果如下：</p>
+
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="http://music.163.com/outchain/player?type=2&amp;id=202373&amp;auto=0&amp;height=66"></iframe>
+
+<h3 id="section-2">推荐</h3>
+<p>一首老歌，最近老是听，好听。歌词可以瞎猜猜什么意思。来自地下丝绒，Lou 之后还写过好多首 XXX says，其中的 Caroline says 基本上是这首的翻唱。</p>
+
+<p class="message">
+Stephanie says<br />
+<small>
+<i>The Velvet Underground</i><br /><br />
+Stephanie says that she wants to know<br />
+Why she's given half her life, to people she hates now<br />
+Stephanie says when answering the phone<br />
+What country shall I say is calling from across the world<br /><br />
+
+But she's not afraid to die, the people all call her Alaska<br />
+Between worlds so the people ask her 'cause it's all in her mind<br />
+It's all in her mind<br /><br />
+
+Stephanie says that she wants to know<br />
+Why it is thought she's the door She can't be the room<br /><br />
+
+Stephanie says but doesn't hang up the phone<br />
+What sea shell sea is calling from across the world<br /><br />
+
+But she's not afraid to die, the people all call her Alaska<br />
+Between worlds so the people ask her 'cause it's all in her mind<br />
+It's all in her mind<br /><br />
+
+She asks you is it good or bad<br />
+It's such an icy feeling it's so cold in Alaska,<br />
+it's so cold in Alaska, it's so cold in Alaska
+</small></p>
+
+<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="86" src="http://music.163.com/outchain/player?type=2&amp;id=4334115&amp;auto=0&amp;height=66"></iframe>
+
+</div>
+
+<div class="related">
+  <h3 style="font-size:90%">Related Posts</h3>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2015/10/08/101-artists-to-listen-to-before-you-die/">
+            101 Artists to Listen to Before You Die
+            <small>08 Oct 2015</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2015/10/07/%E4%B8%9C%E4%BA%AC%E7%89%A9%E8%AF%AD-Tokyo-Story/">
+            东京物语 · Tokyo Story
+            <small>07 Oct 2015</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2015/10/07/recent-playlist/">
+            Recent Playlist
+            <small>07 Oct 2015</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+
+
+      </div>
+    </div>
+
+    <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+
+    <script>
+      (function(document) {
+        var toggle = document.querySelector('.sidebar-toggle');
+        var sidebar = document.querySelector('#sidebar');
+        var checkbox = document.querySelector('#sidebar-checkbox');
+
+        document.addEventListener('click', function(e) {
+          var target = e.target;
+
+          if(!checkbox.checked ||
+             sidebar.contains(target) ||
+             (target === checkbox || target === toggle)) return;
+
+          checkbox.checked = false;
+        }, false);
+      })(document);
+    </script>
+  </body>
+</html>
