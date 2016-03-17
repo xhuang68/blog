@@ -1,0 +1,28 @@
+language: ruby
+rvm:
+- 2.2
+bundler_args: ''
+branches:
+  only:
+  - dev
+before_install:
+- git config --global user.name "Travis CI"
+- git config --global user.email ${EMAIL}
+script:
+- bundle exec jekyll build
+after_success:
+- git clone https://$GITHUB_REPO
+- cd $(basename ${GITHUB_REPO%.git})
+- rsync -az --delete --exclude '.git*' ../_site/ .
+- touch .nojekyll
+- git add -A .
+- git commit -m "Generated Jekyll site by Travis CI - ${TRAVIS_BUILD_NUMBER}"
+- git push --force "https://${DEPLOY_KEY}@${GITHUB_REPO}" HEAD:${REPO_TARGET_BRANCH}
+env:
+  global:
+  - NOKOGIRI_USE_SYSTEM_LIBRARIES=true
+  - GITHUB_REPO: github.com/xhuang68/xhuang68.github.io.git
+  - REPO_TARGET_BRANCH: gh-pages
+  - GH_REF: github.com/xhuang68/xhuang68.github.io.git
+  - secure: GgVGD0+sXShe+2qbJ3tPzAwkWnyO2EzcK+OJlC9xZ6vEjRlDnXfz2f9+ECk9MkKKcc96XCmmLE5ib15bS3YhylFvMNXVNhHcmxvfgngdWreLu6x+jshlZIc6avoLYrySoJd6eadNvyuzE2w8vxNtSitNJTrm4kJmu3gEh+Ydknh+DmcwAW7A5XkWdP+f4yzbI7Cw7IS5+pjeJwIsofrp4XF+nCx+aSYHTDB4vdnZqax4390DRwjkMsZGefI6eapcotDS9xuXnbKj9ReufZeI2dChsDBYJz7s+ZYEvOClioXQDzzcN7b+HXrKvUdIyNbEUW5yUnolYGnpd70afvIg9tRe18xpcJ3Isy/1yDPsEnKSXQzVd3T3lYQ+b9TbVFFEZJyPFerfTC0BKAiBqQARpV6Kr8vsVoq183ahifB2eOiPCkJXiPfUtlWJZTD2O9Sxhzgq+GxgSehR082J9tqd6qnHMkfSlyENtXjksLPHPTY6itGG+SfQL4r/Vk3Jed/Q/86LwaFiZ2UcJILYG5gvkxGuvrcAiNmJKhLfQD/mJo+F9QY1D5OkHoC6BwOwAlb/BYa7mSQVjaGGbkJWBHn0KJMqS+OmEEl7mnihSoprV0mHp+uodes6aphmZmuQy2jmIZ3ypIqE7G7mnSsAwgtfmF3CIdUH2MISAEBZRKeRBwA=
+  - secure: 0+aVVCOsOkGRMGxEdA8PObBu6uBMIN+s/67Ro8j9R7g+12EpkQxlhtrd9XCREacAa7hZu8rzJIsoyDZLg3IJ7ZiyM4s4I43vHczW8JPtXmMpzfegK6tR89dgqXH9S0jPiC6xXwcnMXCT4yzxSCkbbkDQj57YJ3HoiHKQsx8AJY6bFu6wP5Nf5MfoibOdXH4j9DuxxnWiifDBwFSTB1NjWOSuZrfENX5xtllJzVYiqNCVvT1dTdXrgvMAn4iECJ2+iaVSSu3Byals4LlMxaP5QViFzyvCCXEnQSF0AgGWwF6BNuQqHNrcp3k9loyOMApefa1DE0NaHZsyc7ZVjVX/geMgJCbTZQ7dKqQm+D6nEoO6kaLDkA6w/JwejYm8XrYHM9BCtxdBv2RpNqvZTaDJB5EMawWZ1ZPDsK28J7cH+JicWR1dkIYjC33CZe8sMVU//Q776Cs9yHNsvaP2eVh55lgA/l2fIaDw/3yrEvn96Q8pstnTvmFdg3pvI1ljxJ08qBYvKsC6zOHoOGZh5jiZMjDnXAbiRODhM+GZys/gbQXxdB/XrYsC9VlfKh5L8RfTWPCNN79dHTXP4ZIvg56irLHEFAGsnTQ9Od+r+WyLqsaWc8eUao2g+WotBJBDJw/gZLS5IfJngYn4IEuat0XmxLetEPGOET73X3syTQFC2E8=
