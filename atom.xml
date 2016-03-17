@@ -4,7 +4,7 @@
  <title>Xiao</title>
  <link href="http://xiaohuang.rocks/atom.xml" rel="self"/>
  <link href="http://xiaohuang.rocks/"/>
- <updated>2016-03-17T02:50:09+00:00</updated>
+ <updated>2016-03-17T09:01:05+00:00</updated>
  <id>http://xiaohuang.rocks</id>
  <author>
    <name>Xiao Huang</name>
@@ -13,19 +13,170 @@
 
  
  <entry>
+   <title>Jekyll 大括号 {% %} 转义</title>
+   <link href="http://xiaohuang.rocks/2016/03/16/b-jekyll/"/>
+   <updated>2016-03-16T00:00:00+00:00</updated>
+   <id>http://xiaohuang.rocks/2016/03/16/b-jekyll-{%%}</id>
+   <content type="html">&lt;p&gt;使用 GitHub 做静态网站，写文章的时候避免不了要显示大括号这个符号，但是大括号是 Jekyll 的转义字符，所以我们需要想办法输出这个符号了。&lt;/p&gt;
+
+&lt;p&gt;&lt;b&gt;  {% raw %} {% endraw %} &lt;/b&gt;&lt;br /&gt;
+这是一个 Jekyll 中用来对大括号进行转义的函数。 对于一般的文本，直接将其放到  {% raw %} {% endraw %} 中即可转义， 比如：&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;{% raw %}
+
+    content
+
+{% endraw %}&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;!--more--&gt;
+&lt;p&gt;&lt;strong&gt;转义代码&lt;/strong&gt;&lt;br /&gt;
+若是需要对代码进行转义，我的方法是：&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;{% highlight text %}
+
+    {% raw %}
+
+        content
+
+    {% endraw %}
+
+{% endhighlight %}&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;&lt;strong&gt;特殊情况&lt;/strong&gt;&lt;br /&gt;
+如果需要转义  {% raw %} {% endraw %} 自身，直接使用会出错：&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;{% raw %}
+{% raw %}
+{% endraw %}
+{% endraw %}&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;解决办法就是将 {% 赋值给一个变量，在需要输出 {% 的时候，输出这个变量的值：&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;{% assign openTag = &#39;{%&#39; %}
+{{ openTag }} raw %}
+{{ openTag }} endraw %}&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;&lt;strong&gt;其他情况&lt;/strong&gt;&lt;br /&gt;
+当然，实际操作中还会遇到很多其他情况，比如在写这篇博客的时候，好些代码块的转义都改了很多遍才奏效，实操以灵活为准。如果有需要，可以参考本篇博客的 Markdown 转义表达式。&lt;a href=&quot;https://www.dropbox.com/s/txcjdfni9ec6mig/Jekyll%E8%BD%AC%E4%B9%89%E7%AC%A6.md?dl=0&quot;&gt;下载&lt;/a&gt;&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>Jekyll 代码高亮</title>
+   <link href="http://xiaohuang.rocks/2016/03/16/a-jekyll-code-highlight/"/>
+   <updated>2016-03-16T00:00:00+00:00</updated>
+   <id>http://xiaohuang.rocks/2016/03/16/a-jekyll-code-highlight</id>
+   <content type="html">&lt;p&gt;在使用 Jekyll 撰写博客的时候，可以通过 &lt;strong&gt;Pygments&lt;/strong&gt; 和 &lt;strong&gt;Rouge&lt;/strong&gt; 来对博文中的代码进行高亮显示。&lt;br /&gt;
+&lt;!--more--&gt;&lt;/p&gt;
+
+&lt;hr /&gt;
+
+&lt;h2&gt;Pygments&lt;/h2&gt;
+&lt;p&gt;Jekyll 原生支持 &lt;a href=&quot;http://pygments.org&quot;&gt;Pygments&lt;/a&gt;. Pygments 支持超过100种语言，并且支持多种输出格式，比如 HTML, RTF等等。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;修改 _config.yml&lt;/strong&gt;&lt;br /&gt;
+设置 &lt;code class=&quot;highlighter-rouge&quot;&gt;highlighter: pygments&lt;/code&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;本地安装 Pygments&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Pygments 是基于 Python 的，所以机器上需要安装 Python。&lt;/li&gt;
+  &lt;li&gt;&lt;a href=&quot;https://pypi.python.org/pypi/Pygments&quot;&gt;下载&lt;/a&gt;最新的 Pygments, 下载完成后解压。&lt;/li&gt;
+  &lt;li&gt;在解压后的 Pygments 目录中，运行命令：&lt;code class=&quot;highlighter-rouge&quot;&gt;sudo python setup.py install&lt;/code&gt;.&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;选择一种喜欢的代码高亮样式&lt;/strong&gt;&lt;br /&gt;
+Pygments 提供了多种样式，比如 &lt;em&gt;native&lt;/em&gt;, &lt;em&gt;emacs&lt;/em&gt;, &lt;em&gt;vs&lt;/em&gt; 等等，可以在 &lt;a href=&quot;http://pygments.org/demo&quot;&gt;Pygments Demo&lt;/a&gt; 中选择某种语言的例子，体验不同的样式。&lt;br /&gt;
+通过下面的命令可以查看当前支持的样式：&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;pygments.styles&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;STYLE_MAP&lt;/span&gt;  
+&lt;span class=&quot;n&quot;&gt;STYLE_MAP&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;keys&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;  &lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;&lt;strong&gt;选择一种样式，应用在 Jekyll 中&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;cd &amp;lt;your repository path&amp;gt;/css&lt;/code&gt;&lt;/li&gt;
+  &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;pygmentize -S native -f html &amp;gt; pygments.css&lt;/code&gt; “native”是样式名，“html”是formatter.&lt;/li&gt;
+  &lt;li&gt;在 layout 中引用刚刚加的 pygments.css&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;&lt;strong&gt;在文章中高亮代码&lt;/strong&gt;&lt;br /&gt;
+现在，可以在博客中高亮代码了：&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;{% highlight java %}
+public class HelloWorld {
+    public static void main(String args[]) {  
+    System.out.println(&quot;Hello World!&quot;);  
+    }
+}
+{% endhighlight %}&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;效果如下：&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-java&quot; data-lang=&quot;java&quot;&gt;&lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;class&lt;/span&gt; &lt;span class=&quot;nc&quot;&gt;HelloWorld&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;
+    &lt;span class=&quot;kd&quot;&gt;public&lt;/span&gt; &lt;span class=&quot;kd&quot;&gt;static&lt;/span&gt; &lt;span class=&quot;kt&quot;&gt;void&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;main&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;String&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;args&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;[])&lt;/span&gt; &lt;span class=&quot;o&quot;&gt;{&lt;/span&gt;  
+    &lt;span class=&quot;n&quot;&gt;System&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;out&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;na&quot;&gt;println&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;Hello World!&quot;&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;);&lt;/span&gt;  
+    &lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;
+&lt;span class=&quot;o&quot;&gt;}&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;hr /&gt;
+
+&lt;h2&gt;Rouge&lt;/h2&gt;
+&lt;p&gt;Jekyll 原生支持 &lt;a href=&quot;http://rouge.jneen.net&quot;&gt;Rouge&lt;/a&gt;. Rouge 支持超过60种语言。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;Jekyll 3 默认&lt;/strong&gt;&lt;br /&gt;
+Rouge 是 Jekyll 3 默认的代码高亮工具，对于 Jekyll 2， 需要在配置文件中做如下设置：&lt;code class=&quot;highlighter-rouge&quot;&gt;highlighter: rouge&lt;/code&gt;.&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;在文章中高亮代码&lt;/strong&gt;&lt;br /&gt;
+现在，可以在博客中高亮代码了：&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;{% highlight ruby %}
+def foo
+  puts &#39;foo&#39;
+end
+{% endhighlight %}&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;效果如下：&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;foo&lt;/span&gt;
+  &lt;span class=&quot;nb&quot;&gt;puts&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;foo&#39;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;&lt;strong&gt;行号&lt;/strong&gt;&lt;br /&gt;
+highlight 中的第二个参数 linenos 为可选参数，此参数可以为代码添加行号：&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;{% highlight ruby linenos %}
+def foo
+  puts &#39;foo&#39;
+end
+{% endhighlight %}&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+&lt;p&gt;效果如下：&lt;/p&gt;
+
+&lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-ruby&quot; data-lang=&quot;ruby&quot;&gt;&lt;table style=&quot;border-spacing: 0&quot;&gt;&lt;tbody&gt;&lt;tr&gt;&lt;td class=&quot;gutter gl&quot; style=&quot;text-align: right&quot;&gt;&lt;pre class=&quot;lineno&quot;&gt;1
+2
+3&lt;/pre&gt;&lt;/td&gt;&lt;td class=&quot;code&quot;&gt;&lt;pre&gt;&lt;span class=&quot;k&quot;&gt;def&lt;/span&gt; &lt;span class=&quot;nf&quot;&gt;foo&lt;/span&gt;
+  &lt;span class=&quot;nb&quot;&gt;puts&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;foo&#39;&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;span class=&quot;w&quot;&gt;
+&lt;/span&gt;&lt;/pre&gt;&lt;/td&gt;&lt;/tr&gt;&lt;/tbody&gt;&lt;/table&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
+
+</content>
+ </entry>
+ 
+ <entry>
    <title>101 Artists to Listen to Before You Die</title>
-   <link href="http://xiaohuang.rocks/2015/10/08/101-artists-to-listen-to-before-you-die/"/>
+   <link href="http://xiaohuang.rocks/2015/10/08/a-101-artists/"/>
    <updated>2015-10-08T00:00:00+00:00</updated>
-   <id>http://xiaohuang.rocks/2015/10/08/101-artists-to-listen-to-before-you-die</id>
+   <id>http://xiaohuang.rocks/2015/10/08/a-101-artists</id>
    <content type="html">&lt;p&gt;清单一类的东西有时候很有吸引力。最近发现了这一本清单。&lt;/p&gt;
 
 &lt;p&gt;&lt;strong&gt;&lt;em&gt;101 Artists to Listen to Before You Die&lt;/em&gt;&lt;/strong&gt; &lt;br /&gt;
 &lt;img src=&quot;/img/101_1.jpg&quot; alt=&quot;101_1&quot; /&gt;
 &lt;img src=&quot;/img/101_2.jpg&quot; alt=&quot;101_1&quot; /&gt;&lt;/p&gt;
 
-&lt;p&gt;这是一本音乐日记，作者是西班牙插画家和音乐爱好者 &lt;em&gt;Ricardo Cavolo&lt;/em&gt;。在这本书里，他平均用两页纸介绍一位在他生命中有过影响的音乐家。Cavolo 在左边用手写了一些趣闻轶事以及他为什么崇拜他们的复杂思绪，在紧邻的下一页则是一幅署上他名字的生动画像。这并非一本参考书，而是一本色彩斑斓且充满激情的即时日记。&lt;/p&gt;
-
-&lt;p&gt;这本书基本上按照音乐家活跃的顺序编写，以巴赫开始，以 Chief Keef 结束，涵盖了许多不同的音乐流派。Cavolo 是这么描述他的音乐生命的：「我们没有唱片——我们很穷——因此我们只有盗版的磁带，我们有大量这样的盗版磁带，在一辆汽车录影机上播放：滚石乐队（Rolling Stones）、Sex Pistols、 Muddy Waters、 Easy Rider OST、 Chuck Berry……他们使我接受了音乐的洗礼。书中没有西班牙的音乐家，因为我成长过程中所听的音乐都来自美国或者英国。所以在某些时候盎格鲁撒克逊音乐成了我的音乐。」&lt;/p&gt;
+&lt;p&gt;这是一本音乐日记，作者是西班牙插画家和音乐爱好者 &lt;em&gt;Ricardo Cavolo&lt;/em&gt;。在这本书里，他平均用两页纸介绍一位在他生命中有过影响的音乐家。Cavolo 在左边用手写了一些趣闻轶事以及他为什么崇拜他们的复杂思绪，在紧邻的下一页则是一幅署上他名字的生动画像。这并非一本参考书，而是一本色彩斑斓且充满激情的即时日记。 &lt;br /&gt;
+&lt;!--more--&gt;
+这本书基本上按照音乐家活跃的顺序编写，以巴赫开始，以 Chief Keef 结束，涵盖了许多不同的音乐流派。Cavolo 是这么描述他的音乐生命的：「我们没有唱片——我们很穷——因此我们只有盗版的磁带，我们有大量这样的盗版磁带，在一辆汽车录影机上播放：滚石乐队（Rolling Stones）、Sex Pistols、 Muddy Waters、 Easy Rider OST、 Chuck Berry……他们使我接受了音乐的洗礼。书中没有西班牙的音乐家，因为我成长过程中所听的音乐都来自美国或者英国。所以在某些时候盎格鲁撒克逊音乐成了我的音乐。」&lt;/p&gt;
 
 &lt;p&gt;好奇心日报上有一篇专门讲述书和作者故事的文章，这是&lt;a href=&quot;http://www.qdaily.com/articles/15728.html&quot;&gt;链接&lt;/a&gt;。 &lt;br /&gt;
 我在 Amazon 上面购买的这本书，这是&lt;a href=&quot;http://www.amazon.com/101-Artists-Listen-Before-You/dp/1910620009/ref=sr_1_1?ie=UTF8&amp;amp;qid=1444340303&amp;amp;sr=8-1&amp;amp;keywords=101+musician&quot;&gt;链接&lt;/a&gt;&lt;/p&gt;
@@ -34,17 +185,17 @@
  
  <entry>
    <title>东京物语 · Tokyo Story</title>
-   <link href="http://xiaohuang.rocks/2015/10/07/%E4%B8%9C%E4%BA%AC%E7%89%A9%E8%AF%AD-Tokyo-Story/"/>
+   <link href="http://xiaohuang.rocks/2015/10/07/b-tokyo-story/"/>
    <updated>2015-10-07T00:00:00+00:00</updated>
-   <id>http://xiaohuang.rocks/2015/10/07/东京物语-Tokyo-Story</id>
+   <id>http://xiaohuang.rocks/2015/10/07/b-tokyo-story</id>
    <content type="html">&lt;p&gt;&lt;img src=&quot;/img/ts.jpg&quot; alt=&quot;Tokyo Story&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;看了这部1953年的老电影。一开始还不太习惯黑白色调和那个时候略显『僵硬』的演技，但是整部影片绝对不令人失望。
 讲述了六十年前的日本，讲述了爱，亲情，战争，生老病死，距离远近和孤独。在这六十年里，城市发生了翻天覆地的变化，
 亲人间的家庭关系却依然是原来的样子，甚至因为社会的发展，『家庭』在社会关系里的角色更加紧张，更加令人不知所措。
-『东京物语』讲述的就是真实的故事，真实的故事最让人动情。（现在大陆的电影有太多是以煽情博票房，煽情也不错，滥情我不太能接受）&lt;/p&gt;
-
-&lt;p&gt;关于导演 &lt;strong&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/Yasujirō_Ozu&quot;&gt;小津安二郎&lt;/a&gt;&lt;/strong&gt;： &lt;br /&gt;
+『东京物语』讲述的就是真实的故事，真实的故事最让人动情。（现在大陆的电影有太多是以煽情博票房，煽情也不错，滥情我不太能接受）&lt;br /&gt;
+&lt;!--more--&gt;
+关于导演 &lt;strong&gt;&lt;a href=&quot;https://en.wikipedia.org/wiki/Yasujirō_Ozu&quot;&gt;小津安二郎&lt;/a&gt;&lt;/strong&gt;： &lt;br /&gt;
 生卒年：1903年12月12日——1963年12月12日。小津于1963年12月12日因病去世，那天他正好六十岁生日。他的墓碑上，只有一个汉字——“无”。
 小津安二郎共执导了54部影片（只有36部存留世间），其中无声片31部，有声片22部，纪录片1部。在他的54部电影中，
 有19部入围日本影响最大的影片评选奖项——《电影旬报》年度十大佳片之列，有六次勇夺当年十大佳片的冠军。
@@ -53,16 +204,16 @@
 &lt;p&gt;转发几段影评，来自豆瓣用户 &lt;em&gt;九个远方&lt;/em&gt;：&lt;/p&gt;
 
 &lt;p class=&quot;message&quot;&gt;
-『《東京物語》和小津的任何一部電影一樣，講著一個家庭倫理的故事。然而，正是隱忍，所以傷懷，簡單的故事裏講述著一個個深沉的主題：愛、別離、孤獨、蒼老、死亡。大喜大悲一壺滄海，到眼前卻只是一杯隔夜茶的苦澀。』
+「《東京物語》和小津的任何一部電影一樣，講著一個家庭倫理的故事。然而，正是隱忍，所以傷懷，簡單的故事裏講述著一個個深沉的主題：愛、別離、孤獨、蒼老、死亡。大喜大悲一壺滄海，到眼前卻只是一杯隔夜茶的苦澀。」
 &lt;br /&gt;
 &lt;br /&gt;
-『把真實的生活展現出來，但並不做價值評判，這使小津的電影呈現了開放的風格。《東京物語》裏，每一個衝突都只是瑣碎的平常小事，因為平常所以親切，因為親切所以真實，真實得使我們任何一個人都可以在電影中找到自己的位置，成為其中角色，同喜同悲。這是一面鏡子。』
+「把真實的生活展現出來，但並不做價值評判，這使小津的電影呈現了開放的風格。《東京物語》裏，每一個衝突都只是瑣碎的平常小事，因為平常所以親切，因為親切所以真實，真實得使我們任何一個人都可以在電影中找到自己的位置，成為其中角色，同喜同悲。這是一面鏡子。」
 &lt;br /&gt;
 &lt;br /&gt;
-『兒女們未必不愛自己的父母，他們相信自己是愛的，但卻在日常生活的淘洗中漸次失蹤了那份感情，愛與尊敬只剩下一個自以為是的幻影。周吉的大女兒志子就認為自己愛著父母親，而父母們也愛著她，在以工作為由匆忙離開母親的喪禮的時候，臨行志子還拿走了家裏的一包布料。』
+「兒女們未必不愛自己的父母，他們相信自己是愛的，但卻在日常生活的淘洗中漸次失蹤了那份感情，愛與尊敬只剩下一個自以為是的幻影。周吉的大女兒志子就認為自己愛著父母親，而父母們也愛著她，在以工作為由匆忙離開母親的喪禮的時候，臨行志子還拿走了家裏的一包布料。」
 &lt;br /&gt;
 &lt;br /&gt;
-『沒有煽情，但自然感動，小津的電影充滿了靜謐，但並不是一池死水，更像大河之水，流得很慢，看不見速度，但深沉無比。』
+「沒有煽情，但自然感動，小津的電影充滿了靜謐，但並不是一池死水，更像大河之水，流得很慢，看不見速度，但深沉無比。」
 &lt;/p&gt;
 
 &lt;p&gt;链接: &lt;br /&gt;
@@ -73,14 +224,15 @@
  
  <entry>
    <title>Recent Playlist</title>
-   <link href="http://xiaohuang.rocks/2015/10/07/recent-playlist/"/>
+   <link href="http://xiaohuang.rocks/2015/10/07/a-recent-playlists/"/>
    <updated>2015-10-07T00:00:00+00:00</updated>
-   <id>http://xiaohuang.rocks/2015/10/07/recent-playlist</id>
+   <id>http://xiaohuang.rocks/2015/10/07/a-recent-playlists</id>
    <content type="html">&lt;p&gt;&lt;strong&gt;Guitar Recital&lt;/strong&gt;  &lt;br /&gt;
 &lt;em&gt;John Williams&lt;/em&gt;&lt;/p&gt;
 
 &lt;iframe frameborder=&quot;no&quot; border=&quot;0&quot; marginwidth=&quot;0&quot; marginheight=&quot;0&quot; width=&quot;330&quot; height=&quot;450&quot; src=&quot;http://music.163.com/outchain/player?type=0&amp;amp;id=113569531&amp;amp;auto=0&amp;amp;height=430&quot;&gt;&lt;/iframe&gt;
 
+&lt;!--more--&gt;
 &lt;p&gt;&lt;strong&gt;放耳朵去流浪&lt;/strong&gt;  &lt;br /&gt;
 &lt;em&gt;范宗沛&lt;/em&gt;&lt;/p&gt;
 
@@ -90,9 +242,9 @@
  
  <entry>
    <title>在 markdown 中使用网易云音乐外链播放器</title>
-   <link href="http://xiaohuang.rocks/2015/10/06/%E5%9C%A8markdown%E6%97%A5%E5%BF%97%E4%B8%AD%E4%BD%BF%E7%94%A8%E7%BD%91%E6%98%93%E4%BA%91%E9%9F%B3%E4%B9%90%E5%A4%96%E9%93%BE%E6%92%AD%E6%94%BE%E5%99%A8/"/>
+   <link href="http://xiaohuang.rocks/2015/10/06/a-netease-player/"/>
    <updated>2015-10-06T00:00:00+00:00</updated>
-   <id>http://xiaohuang.rocks/2015/10/06/在markdown日志中使用网易云音乐外链播放器</id>
+   <id>http://xiaohuang.rocks/2015/10/06/a-netease-player</id>
    <content type="html">&lt;h3 id=&quot;section&quot;&gt;概述&lt;/h3&gt;
 &lt;p&gt;网易云音乐有两种外链播放器插件。&lt;/p&gt;
 
@@ -104,8 +256,9 @@
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-html&quot; data-lang=&quot;html&quot;&gt;&lt;span class=&quot;nt&quot;&gt;&amp;lt;embed&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;src=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;http://music.163.com/style/swf/widget.swf?sid=29734857&amp;amp;type=2&amp;amp;auto=1&amp;amp;width=320&amp;amp;height=66&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;width=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;340&quot;&lt;/span&gt; &lt;span class=&quot;na&quot;&gt;height=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;86&quot;&lt;/span&gt;  &lt;span class=&quot;na&quot;&gt;allowNetworking=&lt;/span&gt;&lt;span class=&quot;s&quot;&gt;&quot;all&quot;&lt;/span&gt;&lt;span class=&quot;nt&quot;&gt;&amp;gt;&amp;lt;/embed&amp;gt;&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-&lt;h3 id=&quot;section-1&quot;&gt;使用&lt;/h3&gt;
-&lt;p&gt;如今很多平台都不支持 flash 了，所以我使用的是 iframe。&lt;/p&gt;
+&lt;!--more--&gt;
+&lt;p&gt;### 使用 &lt;br /&gt;
+如今很多平台都不支持 flash 了，所以我使用的是 iframe。&lt;/p&gt;
 
 &lt;p&gt;直接使用 iframe 是会直接显示出代码，而不会显示播放器的，需要把 iframe 的&lt;code class=&quot;highlighter-rouge&quot;&gt;width&lt;/code&gt;和&lt;code class=&quot;highlighter-rouge&quot;&gt;height&lt;/code&gt;标签的值加上双引号，另外我将自动播放的选项关掉了，就像这样：&lt;/p&gt;
 
@@ -115,7 +268,7 @@
 
 &lt;iframe frameborder=&quot;no&quot; border=&quot;0&quot; marginwidth=&quot;0&quot; marginheight=&quot;0&quot; width=&quot;330&quot; height=&quot;86&quot; src=&quot;http://music.163.com/outchain/player?type=2&amp;amp;id=202373&amp;amp;auto=0&amp;amp;height=66&quot;&gt;&lt;/iframe&gt;
 
-&lt;h3 id=&quot;section-2&quot;&gt;推荐&lt;/h3&gt;
+&lt;h3 id=&quot;section-1&quot;&gt;推荐&lt;/h3&gt;
 &lt;p&gt;一首老歌，最近老是听，好听。歌词可以瞎猜猜什么意思。来自地下丝绒，Lou 之后还写过好多首 XXX says，其中的 Caroline says 基本上是这首的翻唱。&lt;/p&gt;
 
 &lt;p class=&quot;message&quot;&gt;
@@ -152,9 +305,9 @@ it&#39;s so cold in Alaska, it&#39;s so cold in Alaska
  
  <entry>
    <title>My favorite podcasts</title>
-   <link href="http://xiaohuang.rocks/2015/09/26/my-favorite-podcasts/"/>
+   <link href="http://xiaohuang.rocks/2015/09/26/a-favourite-podcasts/"/>
    <updated>2015-09-26T00:00:00+00:00</updated>
-   <id>http://xiaohuang.rocks/2015/09/26/my-favorite-podcasts</id>
+   <id>http://xiaohuang.rocks/2015/09/26/a-favourite-podcasts</id>
    <content type="html">&lt;ul&gt;
   &lt;li&gt;&lt;a href=&quot;http://atp.fm&quot;&gt;Accidental Tech Podcast&lt;/a&gt;&lt;/li&gt;
   &lt;li&gt;&lt;a href=&quot;https://www.theincomparable.com/theincomparable/&quot;&gt;Incomparable&lt;/a&gt;&lt;/li&gt;
@@ -173,18 +326,18 @@ it&#39;s so cold in Alaska, it&#39;s so cold in Alaska
  
  <entry>
    <title>Beginning</title>
-   <link href="http://xiaohuang.rocks/2015/01/01/beginning/"/>
+   <link href="http://xiaohuang.rocks/2015/01/01/a-beginning/"/>
    <updated>2015-01-01T00:00:00+00:00</updated>
-   <id>http://xiaohuang.rocks/2015/01/01/beginning</id>
+   <id>http://xiaohuang.rocks/2015/01/01/a-beginning</id>
    <content type="html">&lt;p&gt;This is my first article in this blog.&lt;/p&gt;
 </content>
  </entry>
  
  <entry>
    <title>Hello World!</title>
-   <link href="http://xiaohuang.rocks/2014/12/12/hello-world/"/>
+   <link href="http://xiaohuang.rocks/2014/12/12/a-hello/"/>
    <updated>2014-12-12T00:00:00+00:00</updated>
-   <id>http://xiaohuang.rocks/2014/12/12/hello-world</id>
+   <id>http://xiaohuang.rocks/2014/12/12/a-hello</id>
    <content type="html">&lt;p&gt;Hello World!&lt;/p&gt;
 
 &lt;p class=&quot;message&quot;&gt;Hello World!&lt;/p&gt;

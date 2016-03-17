@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      Jekyll 代码高亮 &middot; Xiao
+    
+  </title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/font-awesome-4.4.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/public/css/poole.css">
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/css/lanyon.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Serif:400,400italic,700%7CPT+Sans:400">
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-precomposed.png">
+  <link rel="shortcut icon" href="/public/favicon.ico">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+</head>
+
+
+  <body>
+
+    <!-- Target for toggling the sidebar `.sidebar-checkbox` is for regular
+     styles, `#sidebar-checkbox` for behavior. -->
+<input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox">
+
+<!-- Toggleable sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-item">
+    <p>Stay hungry. Stay foolish.<br/>半路出家，自学还未成才。</p>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="sidebar-nav-item" href="/"><i class="fa fa-home fa-fw"></i><span style="margin-left:2em">Home</span></a>
+
+  <!--
+    
+
+    
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+    
+      
+        
+      
+    
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+  -->
+
+    <a class="sidebar-nav-item" href="/archive"><i class="fa fa-archive fa-fw"></i><span style="margin-left:2em">Achive</span></a>
+    <a class="sidebar-nav-item" href="/tag"><i class="fa fa-tags fa-fw"></i><span style="margin-left:2em">Tags</span></a>
+    <a class="sidebar-nav-item" href="/about"><i class="fa fa-user fa-fw"></i><span style="margin-left:2em">About</span></a>
+    <a class="sidebar-nav-item" href="http://xiaohuang.me"><i class="fa fa-paperclip fa-fw"></i><span style="margin-left:2em">Resume</span></a>
+    <a class="sidebar-nav-item" href="https://github.com/xhuang68/xhuang68.github.io"><i class="fa fa-cog fa-spin fa-fw"></i><span style="margin-left:2em">Source</span></a>
+  </nav>
+
+  <div class="sidebar-item">
+    <p>&copy; 2016 Xiao Huang. <br/>All rights reserved.</p>
+  </div>
+</div>
+
+
+    <!-- Wrap is the content to shift when toggling the sidebar. We wrap the
+         content to avoid any CSS collisions with our real content. -->
+    <div class="wrap">
+      <div class="masthead">
+        <div class="container">
+          <h3 class="masthead-title">
+            <a href="/" title="Home">Xiao</a>
+            <small>黄</small>
+          </h3>
+        </div>
+      </div>
+
+      <div class="container content">
+        <div class="post">
+  <h1 class="post-title">Jekyll 代码高亮</h1>
+  
+    <span class="post-tag"><span class="tag-tech"><a href="/tags/tech">Tech · 技术</a></span></span>
+  
+  
+  
+  
+  
+  
+  
+  <span class="post-date">16 Mar 2016</span>
+  <p>在使用 Jekyll 撰写博客的时候，可以通过 <strong>Pygments</strong> 和 <strong>Rouge</strong> 来对博文中的代码进行高亮显示。<br />
+<!--more--></p>
+
+<hr />
+
+<h2>Pygments</h2>
+<p>Jekyll 原生支持 <a href="http://pygments.org">Pygments</a>. Pygments 支持超过100种语言，并且支持多种输出格式，比如 HTML, RTF等等。</p>
+
+<p><strong>修改 _config.yml</strong><br />
+设置 <code class="highlighter-rouge">highlighter: pygments</code></p>
+
+<p><strong>本地安装 Pygments</strong></p>
+
+<ul>
+  <li>Pygments 是基于 Python 的，所以机器上需要安装 Python。</li>
+  <li><a href="https://pypi.python.org/pypi/Pygments">下载</a>最新的 Pygments, 下载完成后解压。</li>
+  <li>在解压后的 Pygments 目录中，运行命令：<code class="highlighter-rouge">sudo python setup.py install</code>.</li>
+</ul>
+
+<p><strong>选择一种喜欢的代码高亮样式</strong><br />
+Pygments 提供了多种样式，比如 <em>native</em>, <em>emacs</em>, <em>vs</em> 等等，可以在 <a href="http://pygments.org/demo">Pygments Demo</a> 中选择某种语言的例子，体验不同的样式。<br />
+通过下面的命令可以查看当前支持的样式：</p>
+
+<figure class="highlight"><pre><code class="language-python" data-lang="python"><span class="kn">from</span> <span class="nn">pygments.styles</span> <span class="kn">import</span> <span class="n">STYLE_MAP</span>  
+<span class="n">STYLE_MAP</span><span class="o">.</span><span class="n">keys</span><span class="p">()</span>  </code></pre></figure>
+
+<p><strong>选择一种样式，应用在 Jekyll 中</strong></p>
+
+<ul>
+  <li><code class="highlighter-rouge">cd &lt;your repository path&gt;/css</code></li>
+  <li><code class="highlighter-rouge">pygmentize -S native -f html &gt; pygments.css</code> “native”是样式名，“html”是formatter.</li>
+  <li>在 layout 中引用刚刚加的 pygments.css</li>
+</ul>
+
+<p><strong>在文章中高亮代码</strong><br />
+现在，可以在博客中高亮代码了：</p>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">{% highlight java %}
+public class HelloWorld {
+    public static void main(String args[]) {  
+    System.out.println("Hello World!");  
+    }
+}
+{% endhighlight %}</code></pre></figure>
+
+<p>效果如下：</p>
+
+<figure class="highlight"><pre><code class="language-java" data-lang="java"><span class="kd">public</span> <span class="kd">class</span> <span class="nc">HelloWorld</span> <span class="o">{</span>
+    <span class="kd">public</span> <span class="kd">static</span> <span class="kt">void</span> <span class="n">main</span><span class="o">(</span><span class="n">String</span> <span class="n">args</span><span class="o">[])</span> <span class="o">{</span>  
+    <span class="n">System</span><span class="o">.</span><span class="na">out</span><span class="o">.</span><span class="na">println</span><span class="o">(</span><span class="s">"Hello World!"</span><span class="o">);</span>  
+    <span class="o">}</span>
+<span class="o">}</span></code></pre></figure>
+
+<hr />
+
+<h2>Rouge</h2>
+<p>Jekyll 原生支持 <a href="http://rouge.jneen.net">Rouge</a>. Rouge 支持超过60种语言。</p>
+
+<p><strong>Jekyll 3 默认</strong><br />
+Rouge 是 Jekyll 3 默认的代码高亮工具，对于 Jekyll 2， 需要在配置文件中做如下设置：<code class="highlighter-rouge">highlighter: rouge</code>.</p>
+
+<p><strong>在文章中高亮代码</strong><br />
+现在，可以在博客中高亮代码了：</p>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">{% highlight ruby %}
+def foo
+  puts 'foo'
+end
+{% endhighlight %}</code></pre></figure>
+
+<p>效果如下：</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><span class="k">def</span> <span class="nf">foo</span>
+  <span class="nb">puts</span> <span class="s1">'foo'</span>
+<span class="k">end</span></code></pre></figure>
+
+<p><strong>行号</strong><br />
+highlight 中的第二个参数 linenos 为可选参数，此参数可以为代码添加行号：</p>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">{% highlight ruby linenos %}
+def foo
+  puts 'foo'
+end
+{% endhighlight %}</code></pre></figure>
+
+<p>效果如下：</p>
+
+<figure class="highlight"><pre><code class="language-ruby" data-lang="ruby"><table style="border-spacing: 0"><tbody><tr><td class="gutter gl" style="text-align: right"><pre class="lineno">1
+2
+3</pre></td><td class="code"><pre><span class="k">def</span> <span class="nf">foo</span>
+  <span class="nb">puts</span> <span class="s1">'foo'</span>
+<span class="k">end</span><span class="w">
+</span></pre></td></tr></tbody></table></code></pre></figure>
+
+
+</div>
+
+<div class="related">
+  <h3 style="font-size:90%">Related Posts</h3>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2016/03/16/b-jekyll/">
+            Jekyll 大括号 {% %} 转义
+            <small>16 Mar 2016</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2015/10/08/a-101-artists/">
+            101 Artists to Listen to Before You Die
+            <small>08 Oct 2015</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2015/10/07/b-tokyo-story/">
+            东京物语 · Tokyo Story
+            <small>07 Oct 2015</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+
+
+      </div>
+    </div>
+
+    <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+
+    <script>
+      (function(document) {
+        var toggle = document.querySelector('.sidebar-toggle');
+        var sidebar = document.querySelector('#sidebar');
+        var checkbox = document.querySelector('#sidebar-checkbox');
+
+        document.addEventListener('click', function(e) {
+          var target = e.target;
+
+          if(!checkbox.checked ||
+             sidebar.contains(target) ||
+             (target === checkbox || target === toggle)) return;
+
+          checkbox.checked = false;
+        }, false);
+      })(document);
+    </script>
+  </body>
+</html>

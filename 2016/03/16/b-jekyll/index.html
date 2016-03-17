@@ -11,7 +11,7 @@
 
   <title>
     
-      东京物语 · Tokyo Story &middot; Xiao
+      Jekyll 大括号 {% %} 转义 &middot; Xiao
     
   </title>
 
@@ -132,48 +132,58 @@
 
       <div class="container content">
         <div class="post">
-  <h1 class="post-title">东京物语 · Tokyo Story</h1>
+  <h1 class="post-title">Jekyll 大括号 {% %} 转义</h1>
+  
+    <span class="post-tag"><span class="tag-tech"><a href="/tags/tech">Tech · 技术</a></span></span>
   
   
   
   
   
   
-    <span class="post-tag"><span class="tag-movie"><a href="/tags/movie">Movie · 电影</a></span></span>
   
-  
-  <span class="post-date">07 Oct 2015</span>
-  <p><img src="/img/ts.jpg" alt="Tokyo Story" /></p>
+  <span class="post-date">16 Mar 2016</span>
+  <p>使用 GitHub 做静态网站，写文章的时候避免不了要显示大括号这个符号，但是大括号是 Jekyll 的转义字符，所以我们需要想办法输出这个符号了。</p>
 
-<p>看了这部1953年的老电影。一开始还不太习惯黑白色调和那个时候略显『僵硬』的演技，但是整部影片绝对不令人失望。
-讲述了六十年前的日本，讲述了爱，亲情，战争，生老病死，距离远近和孤独。在这六十年里，城市发生了翻天覆地的变化，
-亲人间的家庭关系却依然是原来的样子，甚至因为社会的发展，『家庭』在社会关系里的角色更加紧张，更加令人不知所措。
-『东京物语』讲述的就是真实的故事，真实的故事最让人动情。（现在大陆的电影有太多是以煽情博票房，煽情也不错，滥情我不太能接受）</p>
+<p><b>  {% raw %} {% endraw %} </b><br />
+这是一个 Jekyll 中用来对大括号进行转义的函数。 对于一般的文本，直接将其放到  {% raw %} {% endraw %} 中即可转义， 比如：</p>
 
-<p>关于导演 <strong><a href="https://en.wikipedia.org/wiki/Yasujirō_Ozu">小津安二郎</a></strong>： <br />
-生卒年：1903年12月12日——1963年12月12日。小津于1963年12月12日因病去世，那天他正好六十岁生日。他的墓碑上，只有一个汉字——“无”。
-小津安二郎共执导了54部影片（只有36部存留世间），其中无声片31部，有声片22部，纪录片1部。在他的54部电影中，
-有19部入围日本影响最大的影片评选奖项——《电影旬报》年度十大佳片之列，有六次勇夺当年十大佳片的冠军。
-小津的获奖率之高，在日本国内众多的名导演中也属遥遥领先。在日本电影史上小津享有广泛的国际声誉，除了其作品有复杂的深度外，无疑该归功於国际学者的多面向研究。</p>
+<figure class="highlight"><pre><code class="language-text" data-lang="text">{% raw %}
 
-<p>转发几段影评，来自豆瓣用户 <em>九个远方</em>：</p>
+    content
 
-<p class="message">
-『《東京物語》和小津的任何一部電影一樣，講著一個家庭倫理的故事。然而，正是隱忍，所以傷懷，簡單的故事裏講述著一個個深沉的主題：愛、別離、孤獨、蒼老、死亡。大喜大悲一壺滄海，到眼前卻只是一杯隔夜茶的苦澀。』
-<br />
-<br />
-『把真實的生活展現出來，但並不做價值評判，這使小津的電影呈現了開放的風格。《東京物語》裏，每一個衝突都只是瑣碎的平常小事，因為平常所以親切，因為親切所以真實，真實得使我們任何一個人都可以在電影中找到自己的位置，成為其中角色，同喜同悲。這是一面鏡子。』
-<br />
-<br />
-『兒女們未必不愛自己的父母，他們相信自己是愛的，但卻在日常生活的淘洗中漸次失蹤了那份感情，愛與尊敬只剩下一個自以為是的幻影。周吉的大女兒志子就認為自己愛著父母親，而父母們也愛著她，在以工作為由匆忙離開母親的喪禮的時候，臨行志子還拿走了家裏的一包布料。』
-<br />
-<br />
-『沒有煽情，但自然感動，小津的電影充滿了靜謐，但並不是一池死水，更像大河之水，流得很慢，看不見速度，但深沉無比。』
-</p>
+{% endraw %}</code></pre></figure>
 
-<p>链接: <br />
-<a href="http://www.imdb.com/title/tt0046438/?ref_=fn_al_tt_1">IMDb</a>  <br />
-<a href="https://movie.douban.com/subject/1291568/">豆瓣电影</a></p>
+<!--more-->
+<p><strong>转义代码</strong><br />
+若是需要对代码进行转义，我的方法是：</p>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">{% highlight text %}
+
+    {% raw %}
+
+        content
+
+    {% endraw %}
+
+{% endhighlight %}</code></pre></figure>
+
+<p><strong>特殊情况</strong><br />
+如果需要转义  {% raw %} {% endraw %} 自身，直接使用会出错：</p>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">{% raw %}
+{% raw %}
+{% endraw %}
+{% endraw %}</code></pre></figure>
+
+<p>解决办法就是将 {% 赋值给一个变量，在需要输出 {% 的时候，输出这个变量的值：</p>
+
+<figure class="highlight"><pre><code class="language-text" data-lang="text">{% assign openTag = '{%' %}
+{{ openTag }} raw %}
+{{ openTag }} endraw %}</code></pre></figure>
+
+<p><strong>其他情况</strong><br />
+当然，实际操作中还会遇到很多其他情况，比如在写这篇博客的时候，好些代码块的转义都改了很多遍才奏效，实操以灵活为准。如果有需要，可以参考本篇博客的 Markdown 转义表达式。<a href="https://www.dropbox.com/s/txcjdfni9ec6mig/Jekyll%E8%BD%AC%E4%B9%89%E7%AC%A6.md?dl=0">下载</a></p>
 
 </div>
 
@@ -183,7 +193,16 @@
     
       <li>
         <h3>
-          <a href="/2015/10/08/101-artists-to-listen-to-before-you-die/">
+          <a href="/2016/03/16/a-jekyll-code-highlight/">
+            Jekyll 代码高亮
+            <small>16 Mar 2016</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2015/10/08/a-101-artists/">
             101 Artists to Listen to Before You Die
             <small>08 Oct 2015</small>
           </a>
@@ -192,18 +211,9 @@
     
       <li>
         <h3>
-          <a href="/2015/10/07/recent-playlist/">
-            Recent Playlist
+          <a href="/2015/10/07/b-tokyo-story/">
+            东京物语 · Tokyo Story
             <small>07 Oct 2015</small>
-          </a>
-        </h3>
-      </li>
-    
-      <li>
-        <h3>
-          <a href="/2015/10/06/%E5%9C%A8markdown%E6%97%A5%E5%BF%97%E4%B8%AD%E4%BD%BF%E7%94%A8%E7%BD%91%E6%98%93%E4%BA%91%E9%9F%B3%E4%B9%90%E5%A4%96%E9%93%BE%E6%92%AD%E6%94%BE%E5%99%A8/">
-            在 markdown 中使用网易云音乐外链播放器
-            <small>06 Oct 2015</small>
           </a>
         </h3>
       </li>
