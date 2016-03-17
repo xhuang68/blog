@@ -10,6 +10,7 @@
   * web icon added
   * archive page and function added
   * tag page and function added
+  * page excerpt function added
   * comment function added using [Disqus](https://help.disqus.com)
   * some other small adjust/customization   
 
@@ -25,9 +26,10 @@
   * 添加网页图标
   * 添加按年归档功能
   * 添加文章分类功能
+  * 添加文章预览功能
   * 使用 [Disqus](https://help.disqus.com) 添加评论功能
   * 其他微调及个性化设置   
-  
+
 ## Original Author    
 
 **Mark Otto**

@@ -17,6 +17,7 @@ tag: Tech · 技术
 <embed src="http://music.163.com/style/swf/widget.swf?sid=29734857&type=2&auto=1&width=320&height=66" width="340" height="86"  allowNetworking="all"></embed>
 {% endhighlight html %}   
 
+<!--more-->
 ### 使用   
 如今很多平台都不支持 flash 了，所以我使用的是 iframe。
 
