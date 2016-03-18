@@ -11,7 +11,7 @@
 
   <title>
     
-      Beginning &middot; Xiao
+      静态页面生成器装备持续集成 · 中 &middot; Xiao
     
   </title>
 
@@ -136,7 +136,9 @@
 
       <div class="container content">
         <div class="post">
-  <h1 class="post-title">Beginning</h1>
+  <h1 class="post-title">静态页面生成器装备持续集成 · 中</h1>
+  
+    <span class="post-tag"><span class="tag-tech"><a href="/tags/tech">Tech · 技术</a></span></span>
   
   
   
@@ -144,34 +146,55 @@
   
   
   
-    <span class="post-tag"><span class="tag-misc"><a href="/tags/misc">Misc · 杂</a></span></span>
-  
-  <span class="post-date">01 Jan 2015</span>
-  <p>This is my first article in this blog.</p>
+  <span class="post-date">17 Mar 2016</span>
+  <h3 id="section"><strong>工作流</strong></h3>
+
+<p>有了对 Jekyll, Travis CI 和 GitHub Pages 的了解，我们对于自动构建 Jekyll 工作流的构思是：<br />
+本地向 Github 上 push 代码后，如果该代码属于目标源（暂时称为 Dev repo），Travis CI 就自动构建 Jekyll 环境编译它，并将产出的静态博客 push 回我们的 Github pages 源（暂时称为 Pages repo）。然后即可在 pages 上查看新发布的博客。 如下图：</p>
+
+<p><img src="/img/20160317/2.jpg" alt="intro" /></p>
+
+<!--more-->
+
+<p><strong>分解工作流</strong></p>
+
+<ol>
+  <li><em>User -&gt; push -&gt; Dev repo</em><br />
+事先在 Github 上建立好 repository 即可。有两种方案可供参考：
+    <ul>
+      <li>建立 username.github.io 源，并开设 dev 分支，将此分支作为 Dev repo. 而 master/gh-pages 分支就是 Pages repo. 这样的好处是只用维护一个 repository.</li>
+      <li>另一种方案，建立两个 repositories, 一个作为 Dev repo, 另一个 username.github.io 源就作 Pages repo. 此方案的好处是可以开设多个项目 pages.
+我采用的是前一种方案。其实两种方案实现代码基本相同，使用第二种方案时注意最后配置正确 Pages repo 的 push 路径和权限即可。</li>
+    </ul>
+  </li>
+  <li>
+    <p><em>Dev repo -&gt; sync -&gt; Travis CI</em>
+在 Travis CI 中开启 Dev repo 的同步开关，然后在 Dev repo 中添加 .travis.yml 文件。这样 Travis CI 就能自动同步之后 push 的代码了。另外记得在 Travis CI 的同步设置中启用 <code class="highlighter-rouge">Build only if .travis.yml is present</code> 项，这样能在 repository 中有多个 branch 时，让 Travis CI 只构建放置了.travis.yml 文件的 branch.</p>
+  </li>
+  <li><em>Travis CI -&gt; build and push -&gt; Pages repo</em><br />
+这里再分解为 build 和 push 两步：
+    <ul>
+      <li><em>build</em><br />
+Travis CI 的自动化构建完全依靠唯一的 .travis.yml 脚本文件。需要在此文件中添加构建环境、构建 Jekyll、生成博客及后续 push 到 Pages repo 的全部脚本。有些类似于 Docker 中的 dockerfile。</li>
+      <li><em>push</em><br />
+这一步比较麻烦，涉及到权限设置，加密，下部分会仔细介绍。</li>
+    </ul>
+  </li>
+  <li><em>User -&gt; View the pages</em></li>
+</ol>
 
 </div>
 
 <div class="PageNavigation">
   
-    <a class="prev" href="/2014/12/12/a-hello/">&laquo; Hello World!</a>
+    <a class="prev" href="/2016/03/17/a-travisci/">&laquo; 静态页面生成器装备持续集成 · 上</a>
   
-  
-    <a class="next" href="/2015/09/26/a-favourite-podcasts/">My favorite podcasts &raquo;</a>
   
 </div>
 
 <div class="related">
   <h3 style="font-size:90%">Latest Posts</h3>
   <ul class="related-posts">
-    
-      <li>
-        <h3>
-          <a href="/2016/03/17/b-travisci/">
-            静态页面生成器装备持续集成 · 中
-            <small>17 Mar 2016</small>
-          </a>
-        </h3>
-      </li>
     
       <li>
         <h3>
@@ -186,6 +209,15 @@
         <h3>
           <a href="/2016/03/16/b-jekyll/">
             Jekyll 大括号 {% %} 转义
+            <small>16 Mar 2016</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2016/03/16/a-jekyll-code-highlight/">
+            Jekyll 代码高亮
             <small>16 Mar 2016</small>
           </a>
         </h3>

@@ -103,6 +103,10 @@
         
       
     
+      
+        
+      
+    
   -->
 
     <a class="sidebar-nav-item" href="/archive"><i class="fa fa-archive fa-fw"></i><span style="margin-left:2em">Achive</span></a>
@@ -145,8 +149,9 @@
   <span class="post-date">16 Mar 2016</span>
   <p>使用 GitHub 做静态网站，写文章的时候避免不了要显示大括号这个符号，但是大括号是 Jekyll 的转义字符，所以我们需要想办法输出这个符号了。</p>
 
-<p><b>  {% raw %} {% endraw %} </b><br />
-这是一个 Jekyll 中用来对大括号进行转义的函数。 对于一般的文本，直接将其放到  {% raw %} {% endraw %} 中即可转义， 比如：</p>
+<h3><b>  {% raw %} {% endraw %} </b></h3>
+
+<p>这是一个 Jekyll 中用来对大括号进行转义的函数。 对于一般的文本，直接将其放到  {% raw %} {% endraw %} 中即可转义， 比如：</p>
 
 <figure class="highlight"><pre><code class="language-text" data-lang="text">{% raw %}
 
@@ -155,8 +160,10 @@
 {% endraw %}</code></pre></figure>
 
 <!--more-->
-<p><strong>转义代码</strong><br />
-若是需要对代码进行转义，我的方法是：</p>
+
+<h3 id="section"><strong>转义代码</strong></h3>
+
+<p>若是需要对代码进行转义，我的方法是：</p>
 
 <figure class="highlight"><pre><code class="language-text" data-lang="text">{% highlight text %}
 
@@ -168,8 +175,9 @@
 
 {% endhighlight %}</code></pre></figure>
 
-<p><strong>特殊情况</strong><br />
-如果需要转义  {% raw %} {% endraw %} 自身，直接使用会出错：</p>
+<h3 id="section-1"><strong>特殊情况</strong></h3>
+
+<p>如果需要转义  {% raw %} {% endraw %} 自身，直接使用会出错：</p>
 
 <figure class="highlight"><pre><code class="language-text" data-lang="text">{% raw %}
 {% raw %}
@@ -182,38 +190,48 @@
 {{ openTag }} raw %}
 {{ openTag }} endraw %}</code></pre></figure>
 
-<p><strong>其他情况</strong><br />
-当然，实际操作中还会遇到很多其他情况，比如在写这篇博客的时候，好些代码块的转义都改了很多遍才奏效，实操以灵活为准。如果有需要，可以参考本篇博客的 Markdown 转义表达式。<a href="https://www.dropbox.com/s/txcjdfni9ec6mig/Jekyll%E8%BD%AC%E4%B9%89%E7%AC%A6.md?dl=0">下载</a></p>
+<h3 id="section-2"><strong>其他情况</strong></h3>
+
+<p>当然，实际操作中还会遇到很多其他情况，比如在写这篇博客的时候，好些代码块的转义都改了很多遍才奏效，实操以灵活为准。如果有需要，可以参考本篇博客的 Markdown 转义表达式。<a href="https://www.dropbox.com/s/txcjdfni9ec6mig/Jekyll%E8%BD%AC%E4%B9%89%E7%AC%A6.md?dl=0">下载</a></p>
 
 </div>
 
+<div class="PageNavigation">
+  
+    <a class="prev" href="/2016/03/16/a-jekyll-code-highlight/">&laquo; Jekyll 代码高亮</a>
+  
+  
+    <a class="next" href="/2016/03/17/a-travisci/">静态页面生成器装备持续集成 · 上 &raquo;</a>
+  
+</div>
+
 <div class="related">
-  <h3 style="font-size:90%">Related Posts</h3>
+  <h3 style="font-size:90%">Latest Posts</h3>
   <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2016/03/17/b-travisci/">
+            静态页面生成器装备持续集成 · 中
+            <small>17 Mar 2016</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2016/03/17/a-travisci/">
+            静态页面生成器装备持续集成 · 上
+            <small>17 Mar 2016</small>
+          </a>
+        </h3>
+      </li>
     
       <li>
         <h3>
           <a href="/2016/03/16/a-jekyll-code-highlight/">
             Jekyll 代码高亮
             <small>16 Mar 2016</small>
-          </a>
-        </h3>
-      </li>
-    
-      <li>
-        <h3>
-          <a href="/2015/10/08/a-101-artists/">
-            101 Artists to Listen to Before You Die
-            <small>08 Oct 2015</small>
-          </a>
-        </h3>
-      </li>
-    
-      <li>
-        <h3>
-          <a href="/2015/10/07/b-tokyo-story/">
-            东京物语 · Tokyo Story
-            <small>07 Oct 2015</small>
           </a>
         </h3>
       </li>

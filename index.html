@@ -103,6 +103,10 @@
         
       
     
+      
+        
+      
+    
   -->
 
     <a class="sidebar-nav-item" href="/archive"><i class="fa fa-archive fa-fw"></i><span style="margin-left:2em">Achive</span></a>
@@ -135,6 +139,77 @@
   
   <div class="post">
     <h1 class="post-title">
+      <a href="/2016/03/17/b-travisci/">
+        静态页面生成器装备持续集成 · 中
+      </a>
+    </h1>
+
+    
+      <span class="post-tag"><span class="tag-tech"><a href="/tags/tech">Tech · 技术</a></span></span>
+    
+    
+    
+    
+    
+    
+    
+
+    <span class="post-date">17 Mar 2016</span>
+
+    <h3 id="section"><strong>工作流</strong></h3>
+
+<p>有了对 Jekyll, Travis CI 和 GitHub Pages 的了解，我们对于自动构建 Jekyll 工作流的构思是：<br />
+本地向 Github 上 push 代码后，如果该代码属于目标源（暂时称为 Dev repo），Travis CI 就自动构建 Jekyll 环境编译它，并将产出的静态博客 push 回我们的 Github pages 源（暂时称为 Pages repo）。然后即可在 pages 上查看新发布的博客。 如下图：</p>
+
+<p><img src="/img/20160317/2.jpg" alt="intro" /></p>
+
+
+
+    <a href="/2016/03/17/b-travisci/">
+      More...
+    </a>
+    <div>
+      <br/>
+      <br/>
+    </div>
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
+      <a href="/2016/03/17/a-travisci/">
+        静态页面生成器装备持续集成 · 上
+      </a>
+    </h1>
+
+    
+      <span class="post-tag"><span class="tag-tech"><a href="/tags/tech">Tech · 技术</a></span></span>
+    
+    
+    
+    
+    
+    
+    
+
+    <span class="post-date">17 Mar 2016</span>
+
+    <p><img src="/img/20160317/1.jpg" alt="intro" /></p>
+
+<p>最近把博客全盘折腾成了 Jekyll 静态页面，部署到了 GitHub Pages 上面，并且利用 Travis CI 做了自动化构建和部署。这篇文章是一个简要的备忘记录。上部分主要写概念和工作流，下部分主要记录 Travis 对 Jekyll 的配置细节。</p>
+
+
+
+    <a href="/2016/03/17/a-travisci/">
+      More...
+    </a>
+    <div>
+      <br/>
+      <br/>
+    </div>
+  </div>
+  
+  <div class="post">
+    <h1 class="post-title">
       <a href="/2016/03/16/b-jekyll/">
         Jekyll 大括号 {% %} 转义
       </a>
@@ -154,8 +229,9 @@
 
     <p>使用 GitHub 做静态网站，写文章的时候避免不了要显示大括号这个符号，但是大括号是 Jekyll 的转义字符，所以我们需要想办法输出这个符号了。</p>
 
-<p><b>  {% raw %} {% endraw %} </b><br />
-这是一个 Jekyll 中用来对大括号进行转义的函数。 对于一般的文本，直接将其放到  {% raw %} {% endraw %} 中即可转义， 比如：</p>
+<h3><b>  {% raw %} {% endraw %} </b></h3>
+
+<p>这是一个 Jekyll 中用来对大括号进行转义的函数。 对于一般的文本，直接将其放到  {% raw %} {% endraw %} 中即可转义， 比如：</p>
 
 <figure class="highlight"><pre><code class="language-text" data-lang="text">{% raw %}
 
@@ -168,7 +244,10 @@
     <a href="/2016/03/16/b-jekyll/">
       More...
     </a>
-
+    <div>
+      <br/>
+      <br/>
+    </div>
   </div>
   
   <div class="post">
@@ -197,7 +276,10 @@
     <a href="/2016/03/16/a-jekyll-code-highlight/">
       More...
     </a>
-
+    <div>
+      <br/>
+      <br/>
+    </div>
   </div>
   
   <div class="post">
@@ -222,8 +304,8 @@
     <p>清单一类的东西有时候很有吸引力。最近发现了这一本清单。</p>
 
 <p><strong><em>101 Artists to Listen to Before You Die</em></strong> <br />
-<img src="/img/101_1.jpg" alt="101_1" />
-<img src="/img/101_2.jpg" alt="101_1" /></p>
+<img src="/img/20151008/1.jpg" alt="101_1" />
+<img src="/img/20151008/2.jpg" alt="101_1" /></p>
 
 <p>这是一本音乐日记，作者是西班牙插画家和音乐爱好者 <em>Ricardo Cavolo</em>。在这本书里，他平均用两页纸介绍一位在他生命中有过影响的音乐家。Cavolo 在左边用手写了一些趣闻轶事以及他为什么崇拜他们的复杂思绪，在紧邻的下一页则是一幅署上他名字的生动画像。这并非一本参考书，而是一本色彩斑斓且充满激情的即时日记。</p>
 
@@ -232,73 +314,10 @@
     <a href="/2015/10/08/a-101-artists/">
       More...
     </a>
-
-  </div>
-  
-  <div class="post">
-    <h1 class="post-title">
-      <a href="/2015/10/07/b-tokyo-story/">
-        东京物语 · Tokyo Story
-      </a>
-    </h1>
-
-    
-    
-    
-    
-    
-    
-      <span class="post-tag"><span class="tag-movie"><a href="/tags/movie">Movie · 电影</a></span></span>
-    
-    
-
-    <span class="post-date">07 Oct 2015</span>
-
-    <p><img src="/img/ts.jpg" alt="Tokyo Story" /></p>
-
-<p>看了这部1953年的老电影。一开始还不太习惯黑白色调和那个时候略显『僵硬』的演技，但是整部影片绝对不令人失望。
-讲述了六十年前的日本，讲述了爱，亲情，战争，生老病死，距离远近和孤独。在这六十年里，城市发生了翻天覆地的变化，
-亲人间的家庭关系却依然是原来的样子，甚至因为社会的发展，『家庭』在社会关系里的角色更加紧张，更加令人不知所措。
-『东京物语』讲述的就是真实的故事，真实的故事最让人动情。（现在大陆的电影有太多是以煽情博票房，煽情也不错，滥情我不太能接受）</p>
-
-
-
-    <a href="/2015/10/07/b-tokyo-story/">
-      More...
-    </a>
-
-  </div>
-  
-  <div class="post">
-    <h1 class="post-title">
-      <a href="/2015/10/07/a-recent-playlists/">
-        Recent Playlist
-      </a>
-    </h1>
-
-    
-    
-    
-      <span class="post-tag"><span class="tag-music"><a href="/tags/music">Music · 音乐</a></span></span>
-    
-    
-    
-    
-    
-
-    <span class="post-date">07 Oct 2015</span>
-
-    <p><strong>Guitar Recital</strong>  <br />
-<em>John Williams</em></p>
-
-<iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width="330" height="450" src="http://music.163.com/outchain/player?type=0&amp;id=113569531&amp;auto=0&amp;height=430"></iframe>
-
-
-
-    <a href="/2015/10/07/a-recent-playlists/">
-      More...
-    </a>
-
+    <div>
+      <br/>
+      <br/>
+    </div>
   </div>
   
 </div>

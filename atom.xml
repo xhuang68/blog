@@ -4,7 +4,7 @@
  <title>Xiao</title>
  <link href="http://xiaohuang.rocks/atom.xml" rel="self"/>
  <link href="http://xiaohuang.rocks/"/>
- <updated>2016-03-17T09:22:36+00:00</updated>
+ <updated>2016-03-18T05:48:00+00:00</updated>
  <id>http://xiaohuang.rocks</id>
  <author>
    <name>Xiao Huang</name>
@@ -13,14 +13,122 @@
 
  
  <entry>
+   <title>静态页面生成器装备持续集成 · 中</title>
+   <link href="http://xiaohuang.rocks/2016/03/17/b-travisci/"/>
+   <updated>2016-03-17T00:00:00+00:00</updated>
+   <id>http://xiaohuang.rocks/2016/03/17/b-travisci</id>
+   <content type="html">&lt;h3 id=&quot;section&quot;&gt;&lt;strong&gt;工作流&lt;/strong&gt;&lt;/h3&gt;
+
+&lt;p&gt;有了对 Jekyll, Travis CI 和 GitHub Pages 的了解，我们对于自动构建 Jekyll 工作流的构思是：&lt;br /&gt;
+本地向 Github 上 push 代码后，如果该代码属于目标源（暂时称为 Dev repo），Travis CI 就自动构建 Jekyll 环境编译它，并将产出的静态博客 push 回我们的 Github pages 源（暂时称为 Pages repo）。然后即可在 pages 上查看新发布的博客。 如下图：&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/img/20160317/2.jpg&quot; alt=&quot;intro&quot; /&gt;&lt;/p&gt;
+
+&lt;!--more--&gt;
+
+&lt;p&gt;&lt;strong&gt;分解工作流&lt;/strong&gt;&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;&lt;em&gt;User -&amp;gt; push -&amp;gt; Dev repo&lt;/em&gt;&lt;br /&gt;
+事先在 Github 上建立好 repository 即可。有两种方案可供参考：
+    &lt;ul&gt;
+      &lt;li&gt;建立 username.github.io 源，并开设 dev 分支，将此分支作为 Dev repo. 而 master/gh-pages 分支就是 Pages repo. 这样的好处是只用维护一个 repository.&lt;/li&gt;
+      &lt;li&gt;另一种方案，建立两个 repositories, 一个作为 Dev repo, 另一个 username.github.io 源就作 Pages repo. 此方案的好处是可以开设多个项目 pages.
+我采用的是前一种方案。其实两种方案实现代码基本相同，使用第二种方案时注意最后配置正确 Pages repo 的 push 路径和权限即可。&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;&lt;em&gt;Dev repo -&amp;gt; sync -&amp;gt; Travis CI&lt;/em&gt;
+在 Travis CI 中开启 Dev repo 的同步开关，然后在 Dev repo 中添加 .travis.yml 文件。这样 Travis CI 就能自动同步之后 push 的代码了。另外记得在 Travis CI 的同步设置中启用 &lt;code class=&quot;highlighter-rouge&quot;&gt;Build only if .travis.yml is present&lt;/code&gt; 项，这样能在 repository 中有多个 branch 时，让 Travis CI 只构建放置了.travis.yml 文件的 branch.&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;em&gt;Travis CI -&amp;gt; build and push -&amp;gt; Pages repo&lt;/em&gt;&lt;br /&gt;
+这里再分解为 build 和 push 两步：
+    &lt;ul&gt;
+      &lt;li&gt;&lt;em&gt;build&lt;/em&gt;&lt;br /&gt;
+Travis CI 的自动化构建完全依靠唯一的 .travis.yml 脚本文件。需要在此文件中添加构建环境、构建 Jekyll、生成博客及后续 push 到 Pages repo 的全部脚本。有些类似于 Docker 中的 dockerfile。&lt;/li&gt;
+      &lt;li&gt;&lt;em&gt;push&lt;/em&gt;&lt;br /&gt;
+这一步比较麻烦，涉及到权限设置，加密，下部分会仔细介绍。&lt;/li&gt;
+    &lt;/ul&gt;
+  &lt;/li&gt;
+  &lt;li&gt;&lt;em&gt;User -&amp;gt; View the pages&lt;/em&gt;&lt;/li&gt;
+&lt;/ol&gt;
+</content>
+ </entry>
+ 
+ <entry>
+   <title>静态页面生成器装备持续集成 · 上</title>
+   <link href="http://xiaohuang.rocks/2016/03/17/a-travisci/"/>
+   <updated>2016-03-17T00:00:00+00:00</updated>
+   <id>http://xiaohuang.rocks/2016/03/17/a-travisci</id>
+   <content type="html">&lt;p&gt;&lt;img src=&quot;/img/20160317/1.jpg&quot; alt=&quot;intro&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;最近把博客全盘折腾成了 Jekyll 静态页面，部署到了 GitHub Pages 上面，并且利用 Travis CI 做了自动化构建和部署。这篇文章是一个简要的备忘记录。上部分主要写概念和工作流，下部分主要记录 Travis 对 Jekyll 的配置细节。&lt;br /&gt;
+&lt;!--more--&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;jekyll&quot;&gt;&lt;strong&gt;Jekyll&lt;/strong&gt;&lt;/h3&gt;
+
+&lt;p&gt;&lt;a href=&quot;https://jekyllrb.com/&quot;&gt;Jekyll&lt;/a&gt; 不用多讲，静态页面生成器。 其它类似的还有 &lt;a href=&quot;https://hexo.io/&quot;&gt;hexo&lt;/a&gt;, &lt;a href=&quot;http://octopress.org/&quot;&gt;octopress&lt;/a&gt; 等等。&lt;/p&gt;
+
+&lt;h3 id=&quot;section&quot;&gt;&lt;strong&gt;持续集成&lt;/strong&gt;&lt;/h3&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;持续集成是一种软件开发实践。在持续集成中，团队成员频繁集成他们的工作成果，每人每天可能集成一次，甚至多次。每次集成会经过自动构建（包括自动测试）的检验，以尽快发现集成错误。许多团队发现这种方法可以显著减少集成引起的问题，并可以加快团队合作软件开发的速度。&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;自动构建工具是持续集成的一种出色实践。实际上，代码提交后，由软件自动完成代码的测试、构建，并将过程中状态与构建物产出才是持续集成的意义。Travis CI 就是一个在线的、分布式的持续集成服务，用来构建及测试在 GitHub 托管的代码。这个软件的代码同时也是开源的，提供了多种编程语言的支持，包括 Ruby, JavaScript, Java, Scala, PHP 等。&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;原理：Travis CI 会在每一次提交之后生成一个虚拟机来执行事先安排好的 build 任务，你可以调整这个虚拟机的软件环境，甚至能执行 sudo apt-get install 自定义虚拟环境。&lt;/em&gt;&lt;/p&gt;
+
+&lt;h3 id=&quot;section-1&quot;&gt;&lt;strong&gt;静态页面生成器 + 持续集成&lt;/strong&gt;&lt;/h3&gt;
+
+&lt;p&gt;我们在每次修改添加新文章后，静态页面生成器都需要重新构建、发布，这样的机械化工作交给 Travis CI 再合适不过了。另外，利用 Travis CI 还可以带来很多其他的方便。&lt;/p&gt;
+
+&lt;p&gt;比如，为 &lt;strong&gt;多人协作&lt;/strong&gt; 带来的方便。一般情况下，我们需要本地产生静态档案然后 push 到 GitHub 上。如此这般，对于普通博客或许还算轻松，但是对于偶尔会有的 pull request 就比较麻烦。试想一下，在合并了 pull request 时候，我们必须把最近的 commit 在拉到本地进行手动 build, 之后还需再 push 进行部署。 这样一来，总会有很多麻烦，往往 pull request 合并之后，网页却还未及时更新。&lt;/p&gt;
+
+&lt;p&gt;再比如，为 &lt;strong&gt;测试&lt;/strong&gt; 带来方便。最简单的测试代码是运行 &lt;code class=&quot;highlighter-rouge&quot;&gt;jekyll build&lt;/code&gt; 来确保 Jekyll 对站点的构建不会出错。它并不检查站点的输出结果，而只确保构建正确地进行。当需要测试 Jekyll 的输出结果时，html-proofer 是最佳的工具选择。这个工具会检查输出站点中所有的链接和图片的有效性。可以很方便地使用命令行 &lt;code class=&quot;highlighter-rouge&quot;&gt;htmlproof&lt;/code&gt; 执行该工具，或者写一段 Ruby 代码来执行该 gem。点击 &lt;a href=&quot;https://github.com/gjtorikian/html-proofer&quot;&gt;html-proofer&lt;/a&gt; 查看更多细节。利用持续集成，我们可以将此测试部分放到 Travis CI 去，一旦测试通过，网页便可完成自动部署。&lt;/p&gt;
+
+&lt;h3 id=&quot;github-pages&quot;&gt;&lt;strong&gt;GitHub Pages&lt;/strong&gt;&lt;/h3&gt;
+
+&lt;p&gt;GitHub Pages 为我们提供了便捷的网页 host 服务，此服务直接来自 GitHub 的代码库。因此我们可以直接编辑代码库然后 push 之后网页就可以及时更新了。&lt;/p&gt;
+
+&lt;p&gt;GitHub Pages 的 Slogan 叫做是：&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;Websites for you and your projects.&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;所以 GitHub Pages 支持两种设置：&lt;strong&gt;User site&lt;/strong&gt; 和 &lt;strong&gt;Project site&lt;/strong&gt;。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;异同&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;以上两种网页设置都是直接由 GitHub 代码库生成，唯一的区别是 User site 的 publishing branch 是 &lt;strong&gt;master&lt;/strong&gt;，而 Project site 的 publishing branch 是 &lt;strong&gt;gh-pages&lt;/strong&gt;。而且每个 GitHub 代码库只支持唯一一个 User site， 但是可以支持多个 Project site。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;域名&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;GitHub Pages 的域名设置简单明了。User site 拥有一个唯一的域名 &lt;code class=&quot;highlighter-rouge&quot;&gt;username.github.io&lt;/code&gt;，而每个 Project site 则是对应的 &lt;code class=&quot;highlighter-rouge&quot;&gt;username.github.io/projectname&lt;/code&gt;。&lt;/p&gt;
+
+&lt;p&gt;&lt;strong&gt;CNAME&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;GitHub Pages 当然支持自定义域名，只需要在代码库中添加 &lt;em&gt;CNAME&lt;/em&gt; 文件即可。&lt;/p&gt;
+
+&lt;p&gt;举个例子，用户 &lt;a href=&quot;https://github.com/muan/&quot;&gt;muan&lt;/a&gt; 拥有一个名为 &lt;a href=&quot;https://github.com/muan/muan.github.com&quot;&gt;muan.github.com&lt;/a&gt; 的 User Pages 代码库，现在我们就可以通过 &lt;code class=&quot;highlighter-rouge&quot;&gt;muan.github.io&lt;/code&gt; 来访问。接着 muan 为这个代码库添加了一个 &lt;em&gt;CNMAE&lt;/em&gt; 文件，内容为 &lt;code class=&quot;highlighter-rouge&quot;&gt;muan.co&lt;/code&gt;，这意味着我们现在可以通过 &lt;code class=&quot;highlighter-rouge&quot;&gt;muan.co&lt;/code&gt; 这个 url 来访问代码库。&lt;/p&gt;
+
+&lt;p&gt;除此之外，muan 还拥有一个叫做 &lt;a href=&quot;https://github.com/muan/emoji/&quot;&gt;emoji&lt;/a&gt; 的 Project Pages 代码库。现在这个代码库可以通过 &lt;code class=&quot;highlighter-rouge&quot;&gt;muan.github.io/emoji&lt;/code&gt; 或者 &lt;code class=&quot;highlighter-rouge&quot;&gt;muan.co/emoji&lt;/code&gt; 来访问。之后 muan 为这个代码库添加了一个 &lt;em&gt;CNMAE&lt;/em&gt; 文件，内容为 &lt;code class=&quot;highlighter-rouge&quot;&gt;emoji.muan.co&lt;/code&gt;，现在我们则可以通过 &lt;code class=&quot;highlighter-rouge&quot;&gt;emoji.muan.co&lt;/code&gt; 来访问这个网页了。&lt;/p&gt;
+
+&lt;p&gt;更多关于 &lt;a href=&quot;https://pages.github.com/&quot;&gt;GitHub Pages&lt;/a&gt;, &lt;a href=&quot;https://help.github.com/articles/setting-up-your-pages-site-repository/&quot;&gt;CNAME 设置&lt;/a&gt; 和 &lt;a href=&quot;https://help.github.com/articles/quick-start-setting-up-a-custom-domain/&quot;&gt;在 DNS 供应商处设置自定义域名&lt;/a&gt; 的内容。&lt;/p&gt;
+</content>
+ </entry>
+ 
+ <entry>
    <title>Jekyll 大括号 {% %} 转义</title>
    <link href="http://xiaohuang.rocks/2016/03/16/b-jekyll/"/>
    <updated>2016-03-16T00:00:00+00:00</updated>
    <id>http://xiaohuang.rocks/2016/03/16/b-jekyll-{%%}</id>
    <content type="html">&lt;p&gt;使用 GitHub 做静态网站，写文章的时候避免不了要显示大括号这个符号，但是大括号是 Jekyll 的转义字符，所以我们需要想办法输出这个符号了。&lt;/p&gt;
 
-&lt;p&gt;&lt;b&gt;  {% raw %} {% endraw %} &lt;/b&gt;&lt;br /&gt;
-这是一个 Jekyll 中用来对大括号进行转义的函数。 对于一般的文本，直接将其放到  {% raw %} {% endraw %} 中即可转义， 比如：&lt;/p&gt;
+&lt;h3&gt;&lt;b&gt;  {% raw %} {% endraw %} &lt;/b&gt;&lt;/h3&gt;
+
+&lt;p&gt;这是一个 Jekyll 中用来对大括号进行转义的函数。 对于一般的文本，直接将其放到  {% raw %} {% endraw %} 中即可转义， 比如：&lt;/p&gt;
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;{% raw %}
 
@@ -29,8 +137,10 @@
 {% endraw %}&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
 &lt;!--more--&gt;
-&lt;p&gt;&lt;strong&gt;转义代码&lt;/strong&gt;&lt;br /&gt;
-若是需要对代码进行转义，我的方法是：&lt;/p&gt;
+
+&lt;h3 id=&quot;section&quot;&gt;&lt;strong&gt;转义代码&lt;/strong&gt;&lt;/h3&gt;
+
+&lt;p&gt;若是需要对代码进行转义，我的方法是：&lt;/p&gt;
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;{% highlight text %}
 
@@ -42,8 +152,9 @@
 
 {% endhighlight %}&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-&lt;p&gt;&lt;strong&gt;特殊情况&lt;/strong&gt;&lt;br /&gt;
-如果需要转义  {% raw %} {% endraw %} 自身，直接使用会出错：&lt;/p&gt;
+&lt;h3 id=&quot;section-1&quot;&gt;&lt;strong&gt;特殊情况&lt;/strong&gt;&lt;/h3&gt;
+
+&lt;p&gt;如果需要转义  {% raw %} {% endraw %} 自身，直接使用会出错：&lt;/p&gt;
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;{% raw %}
 {% raw %}
@@ -56,8 +167,9 @@
 {{ openTag }} raw %}
 {{ openTag }} endraw %}&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-&lt;p&gt;&lt;strong&gt;其他情况&lt;/strong&gt;&lt;br /&gt;
-当然，实际操作中还会遇到很多其他情况，比如在写这篇博客的时候，好些代码块的转义都改了很多遍才奏效，实操以灵活为准。如果有需要，可以参考本篇博客的 Markdown 转义表达式。&lt;a href=&quot;https://www.dropbox.com/s/txcjdfni9ec6mig/Jekyll%E8%BD%AC%E4%B9%89%E7%AC%A6.md?dl=0&quot;&gt;下载&lt;/a&gt;&lt;/p&gt;
+&lt;h3 id=&quot;section-2&quot;&gt;&lt;strong&gt;其他情况&lt;/strong&gt;&lt;/h3&gt;
+
+&lt;p&gt;当然，实际操作中还会遇到很多其他情况，比如在写这篇博客的时候，好些代码块的转义都改了很多遍才奏效，实操以灵活为准。如果有需要，可以参考本篇博客的 Markdown 转义表达式。&lt;a href=&quot;https://www.dropbox.com/s/txcjdfni9ec6mig/Jekyll%E8%BD%AC%E4%B9%89%E7%AC%A6.md?dl=0&quot;&gt;下载&lt;/a&gt;&lt;/p&gt;
 </content>
  </entry>
  
@@ -71,13 +183,14 @@
 
 &lt;hr /&gt;
 
-&lt;h2&gt;Pygments&lt;/h2&gt;
+&lt;h2 id=&quot;pygments&quot;&gt;&lt;strong&gt;Pygments&lt;/strong&gt;&lt;/h2&gt;
+
 &lt;p&gt;Jekyll 原生支持 &lt;a href=&quot;http://pygments.org&quot;&gt;Pygments&lt;/a&gt;. Pygments 支持超过100种语言，并且支持多种输出格式，比如 HTML, RTF等等。&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;修改 _config.yml&lt;/strong&gt;&lt;br /&gt;
-设置 &lt;code class=&quot;highlighter-rouge&quot;&gt;highlighter: pygments&lt;/code&gt;&lt;/p&gt;
+&lt;h3 id=&quot;configyml&quot;&gt;&lt;strong&gt;修改 _config.yml&lt;/strong&gt;&lt;/h3&gt;
+&lt;p&gt;设置 &lt;code class=&quot;highlighter-rouge&quot;&gt;highlighter: pygments&lt;/code&gt;&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;本地安装 Pygments&lt;/strong&gt;&lt;/p&gt;
+&lt;h3 id=&quot;pygments-1&quot;&gt;&lt;strong&gt;本地安装 Pygments&lt;/strong&gt;&lt;/h3&gt;
 
 &lt;ul&gt;
   &lt;li&gt;Pygments 是基于 Python 的，所以机器上需要安装 Python。&lt;/li&gt;
@@ -85,14 +198,15 @@
   &lt;li&gt;在解压后的 Pygments 目录中，运行命令：&lt;code class=&quot;highlighter-rouge&quot;&gt;sudo python setup.py install&lt;/code&gt;.&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;&lt;strong&gt;选择一种喜欢的代码高亮样式&lt;/strong&gt;&lt;br /&gt;
-Pygments 提供了多种样式，比如 &lt;em&gt;native&lt;/em&gt;, &lt;em&gt;emacs&lt;/em&gt;, &lt;em&gt;vs&lt;/em&gt; 等等，可以在 &lt;a href=&quot;http://pygments.org/demo&quot;&gt;Pygments Demo&lt;/a&gt; 中选择某种语言的例子，体验不同的样式。&lt;br /&gt;
+&lt;h3 id=&quot;section&quot;&gt;&lt;strong&gt;选择一种喜欢的代码高亮样式&lt;/strong&gt;&lt;/h3&gt;
+
+&lt;p&gt;Pygments 提供了多种样式，比如 &lt;em&gt;native&lt;/em&gt;, &lt;em&gt;emacs&lt;/em&gt;, &lt;em&gt;vs&lt;/em&gt; 等等，可以在 &lt;a href=&quot;http://pygments.org/demo&quot;&gt;Pygments Demo&lt;/a&gt; 中选择某种语言的例子，体验不同的样式。&lt;br /&gt;
 通过下面的命令可以查看当前支持的样式：&lt;/p&gt;
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-python&quot; data-lang=&quot;python&quot;&gt;&lt;span class=&quot;kn&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;nn&quot;&gt;pygments.styles&lt;/span&gt; &lt;span class=&quot;kn&quot;&gt;import&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;STYLE_MAP&lt;/span&gt;  
 &lt;span class=&quot;n&quot;&gt;STYLE_MAP&lt;/span&gt;&lt;span class=&quot;o&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;keys&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;()&lt;/span&gt;  &lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-&lt;p&gt;&lt;strong&gt;选择一种样式，应用在 Jekyll 中&lt;/strong&gt;&lt;/p&gt;
+&lt;h3 id=&quot;jekyll-&quot;&gt;&lt;strong&gt;选择一种样式，应用在 Jekyll 中&lt;/strong&gt;&lt;/h3&gt;
 
 &lt;ul&gt;
   &lt;li&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;cd &amp;lt;your repository path&amp;gt;/css&lt;/code&gt;&lt;/li&gt;
@@ -100,8 +214,9 @@ Pygments 提供了多种样式，比如 &lt;em&gt;native&lt;/em&gt;, &lt;em&gt;e
   &lt;li&gt;在 layout 中引用刚刚加的 pygments.css&lt;/li&gt;
 &lt;/ul&gt;
 
-&lt;p&gt;&lt;strong&gt;在文章中高亮代码&lt;/strong&gt;&lt;br /&gt;
-现在，可以在博客中高亮代码了：&lt;/p&gt;
+&lt;h3 id=&quot;section-1&quot;&gt;&lt;strong&gt;在文章中高亮代码&lt;/strong&gt;&lt;/h3&gt;
+
+&lt;p&gt;现在，可以在博客中高亮代码了：&lt;/p&gt;
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;{% highlight java %}
 public class HelloWorld {
@@ -121,14 +236,17 @@ public class HelloWorld {
 
 &lt;hr /&gt;
 
-&lt;h2&gt;Rouge&lt;/h2&gt;
+&lt;h2 id=&quot;rouge&quot;&gt;&lt;strong&gt;Rouge&lt;/strong&gt;&lt;/h2&gt;
+
 &lt;p&gt;Jekyll 原生支持 &lt;a href=&quot;http://rouge.jneen.net&quot;&gt;Rouge&lt;/a&gt;. Rouge 支持超过60种语言。&lt;/p&gt;
 
-&lt;p&gt;&lt;strong&gt;Jekyll 3 默认&lt;/strong&gt;&lt;br /&gt;
-Rouge 是 Jekyll 3 默认的代码高亮工具，对于 Jekyll 2， 需要在配置文件中做如下设置：&lt;code class=&quot;highlighter-rouge&quot;&gt;highlighter: rouge&lt;/code&gt;.&lt;/p&gt;
+&lt;h3 id=&quot;jekyll-3-&quot;&gt;&lt;strong&gt;Jekyll 3 默认&lt;/strong&gt;&lt;/h3&gt;
 
-&lt;p&gt;&lt;strong&gt;在文章中高亮代码&lt;/strong&gt;&lt;br /&gt;
-现在，可以在博客中高亮代码了：&lt;/p&gt;
+&lt;p&gt;Rouge 是 Jekyll 3 默认的代码高亮工具，对于 Jekyll 2， 需要在配置文件中做如下设置：&lt;code class=&quot;highlighter-rouge&quot;&gt;highlighter: rouge&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h3 id=&quot;section-2&quot;&gt;&lt;strong&gt;在文章中高亮代码&lt;/strong&gt;&lt;/h3&gt;
+
+&lt;p&gt;现在，可以在博客中高亮代码了：&lt;/p&gt;
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;{% highlight ruby %}
 def foo
@@ -142,8 +260,9 @@ end
   &lt;span class=&quot;nb&quot;&gt;puts&lt;/span&gt; &lt;span class=&quot;s1&quot;&gt;&#39;foo&#39;&lt;/span&gt;
 &lt;span class=&quot;k&quot;&gt;end&lt;/span&gt;&lt;/code&gt;&lt;/pre&gt;&lt;/figure&gt;
 
-&lt;p&gt;&lt;strong&gt;行号&lt;/strong&gt;&lt;br /&gt;
-highlight 中的第二个参数 linenos 为可选参数，此参数可以为代码添加行号：&lt;/p&gt;
+&lt;h3 id=&quot;section-3&quot;&gt;&lt;strong&gt;行号&lt;/strong&gt;&lt;/h3&gt;
+
+&lt;p&gt;highlight 中的第二个参数 linenos 为可选参数，此参数可以为代码添加行号：&lt;/p&gt;
 
 &lt;figure class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;{% highlight ruby linenos %}
 def foo
@@ -171,8 +290,8 @@ end
    <content type="html">&lt;p&gt;清单一类的东西有时候很有吸引力。最近发现了这一本清单。&lt;/p&gt;
 
 &lt;p&gt;&lt;strong&gt;&lt;em&gt;101 Artists to Listen to Before You Die&lt;/em&gt;&lt;/strong&gt; &lt;br /&gt;
-&lt;img src=&quot;/img/101_1.jpg&quot; alt=&quot;101_1&quot; /&gt;
-&lt;img src=&quot;/img/101_2.jpg&quot; alt=&quot;101_1&quot; /&gt;&lt;/p&gt;
+&lt;img src=&quot;/img/20151008/1.jpg&quot; alt=&quot;101_1&quot; /&gt;
+&lt;img src=&quot;/img/20151008/2.jpg&quot; alt=&quot;101_1&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;这是一本音乐日记，作者是西班牙插画家和音乐爱好者 &lt;em&gt;Ricardo Cavolo&lt;/em&gt;。在这本书里，他平均用两页纸介绍一位在他生命中有过影响的音乐家。Cavolo 在左边用手写了一些趣闻轶事以及他为什么崇拜他们的复杂思绪，在紧邻的下一页则是一幅署上他名字的生动画像。这并非一本参考书，而是一本色彩斑斓且充满激情的即时日记。 &lt;br /&gt;
 &lt;!--more--&gt;
@@ -188,7 +307,7 @@ end
    <link href="http://xiaohuang.rocks/2015/10/07/b-tokyo-story/"/>
    <updated>2015-10-07T00:00:00+00:00</updated>
    <id>http://xiaohuang.rocks/2015/10/07/b-tokyo-story</id>
-   <content type="html">&lt;p&gt;&lt;img src=&quot;/img/ts.jpg&quot; alt=&quot;Tokyo Story&quot; /&gt;&lt;/p&gt;
+   <content type="html">&lt;p&gt;&lt;img src=&quot;/img/20151007/1.jpg&quot; alt=&quot;Tokyo Story&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;看了这部1953年的老电影。一开始还不太习惯黑白色调和那个时候略显『僵硬』的演技，但是整部影片绝对不令人失望。
 讲述了六十年前的日本，讲述了爱，亲情，战争，生老病死，距离远近和孤独。在这六十年里，城市发生了翻天覆地的变化，
