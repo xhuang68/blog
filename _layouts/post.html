@@ -5,33 +5,42 @@ comments: true
 
 <div class="post">
   <h1 class="post-title">{{ page.title }}</h1>
-  {% if page.tag == "Tech · 技术" %}
-    <span class="post-tag"><span class="tag-tech"><a href="{{ site.baseurl }}/tags/tech">{{ page.tag }}</a></span></span>
+  {% if page.tag == "tech" %}
+    <span class="post-tag"><span class="tag-tech"><a href="{{ site.baseurl }}/tags/tech">Tech · 技术</a></span></span>
   {% endif %}
-  {% if page.tag == "Life · 生活" %}
-    <span class="post-tag"><span class="tag-life"><a href="{{ site.baseurl }}/tags/life">{{ page.tag }}</a></span></span>
+  {% if page.tag == "life" %}
+    <span class="post-tag"><span class="tag-life"><a href="{{ site.baseurl }}/tags/life">Life · 生活</a></span></span>
   {% endif %}
-  {% if page.tag == "Music · 音乐" %}
-    <span class="post-tag"><span class="tag-music"><a href="{{ site.baseurl }}/tags/music">{{ page.tag }}</a></span></span>
+  {% if page.tag == "music" %}
+    <span class="post-tag"><span class="tag-music"><a href="{{ site.baseurl }}/tags/music">Music · 音乐</a></span></span>
   {% endif %}
-  {% if page.tag == "Design · 设计" %}
-    <span class="post-tag"><span class="tag-design"><a href="{{ site.baseurl }}/tags/design">{{ page.tag }}</a></span></span>
+  {% if page.tag == "design" %}
+    <span class="post-tag"><span class="tag-design"><a href="{{ site.baseurl }}/tags/design">Design · 设计</a></span></span>
   {% endif %}
-  {% if page.tag == "Reading · 读书" %}
-    <span class="post-tag"><span class="tag-reading"><a href="{{ site.baseurl }}/tags/reading">{{ page.tag }}</a></span></span>
+  {% if page.tag == "reading" %}
+    <span class="post-tag"><span class="tag-reading"><a href="{{ site.baseurl }}/tags/reading">Reading · 读书</a></span></span>
   {% endif %}
-  {% if page.tag == "Movie · 电影" %}
-    <span class="post-tag"><span class="tag-movie"><a href="{{ site.baseurl }}/tags/movie">{{ page.tag }}</a></span></span>
+  {% if page.tag == "movie" %}
+    <span class="post-tag"><span class="tag-movie"><a href="{{ site.baseurl }}/tags/movie">Movie · 电影</a></span></span>
   {% endif %}
-  {% if page.tag == "Misc · 杂" %}
-    <span class="post-tag"><span class="tag-misc"><a href="{{ site.baseurl }}/tags/misc">{{ page.tag }}</a></span></span>
+  {% if page.tag == "misc" %}
+    <span class="post-tag"><span class="tag-misc"><a href="{{ site.baseurl }}/tags/misc">Misc · 杂</a></span></span>
   {% endif %}
   <span class="post-date">{{ page.date | date_to_string }}</span>
   {{ content }}
 </div>
 
+<div class="PageNavigation">
+  {% if page.previous.url %}
+    <a class="prev" href="{{page.previous.url}}">&laquo; {{page.previous.title}}</a>
+  {% endif %}
+  {% if page.next.url %}
+    <a class="next" href="{{page.next.url}}">{{page.next.title}} &raquo;</a>
+  {% endif %}
+</div>
+
 <div class="related">
-  <h3 style="font-size:90%">Related Posts</h3>
+  <h3 style="font-size:90%">Latest Posts</h3>
   <ul class="related-posts">
     {% for post in site.related_posts limit:3 %}
       <li>
@@ -48,29 +57,25 @@ comments: true
 
 {% if page.comments %}
 <div id="disqus_thread"></div>
-<script type="text/javascript">
-    /* * * CONFIGURATION VARIABLES * * */
-    var disqus_shortname = 'xiaohuang';
+<script>
+    /**
+     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+     */
+    /*
+    var disqus_config = function () {
+        this.page.url = PAGE_URL;  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = PAGE_IDENTIFIER; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+    */
+    (function() {  // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
 
-    /* * * DON'T EDIT BELOW THIS LINE * * */
-    (function() {
-        var dsq = document.createElement('script'); dsq.type = 'text/javascript'; dsq.async = true;
-        dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
-        (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+        s.src = '//xiaohuang.disqus.com/embed.js';
+
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
     })();
 </script>
 <noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
-
-<script type="text/javascript">
-    /* * * CONFIGURATION VARIABLES * * */
-    var disqus_shortname = 'xiaohuang';
-
-    /* * * DON'T EDIT BELOW THIS LINE * * */
-    (function () {
-        var s = document.createElement('script'); s.async = true;
-        s.type = 'text/javascript';
-        s.src = '//' + disqus_shortname + '.disqus.com/count.js';
-        (document.getElementsByTagName('HEAD')[0] || document.getElementsByTagName('BODY')[0]).appendChild(s);
-    }());
-</script>
 {% endif %}

@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Recent Playlist
-tag: Music · 音乐
+tag: music
 ---
 
 **Guitar Recital**    

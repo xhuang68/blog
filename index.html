@@ -12,26 +12,26 @@ title: Home
       </a>
     </h1>
 
-    {% if post.tag == "Tech · 技术" %}
-      <span class="post-tag"><span class="tag-tech"><a href="{{ site.baseurl }}/tags/tech">{{ post.tag }}</a></span></span>
+    {% if post.tag == "tech" %}
+      <span class="post-tag"><span class="tag-tech"><a href="{{ site.baseurl }}/tags/tech">Tech · 技术</a></span></span>
     {% endif %}
-    {% if post.tag == "Life · 生活" %}
-      <span class="post-tag"><span class="tag-life"><a href="{{ site.baseurl }}/tags/life">{{ post.tag }}</a></span></span>
+    {% if post.tag == "life" %}
+      <span class="post-tag"><span class="tag-life"><a href="{{ site.baseurl }}/tags/life">Life · 生活</a></span></span>
     {% endif %}
-    {% if post.tag == "Music · 音乐" %}
-      <span class="post-tag"><span class="tag-music"><a href="{{ site.baseurl }}/tags/music">{{ post.tag }}</a></span></span>
+    {% if post.tag == "music" %}
+      <span class="post-tag"><span class="tag-music"><a href="{{ site.baseurl }}/tags/music">Music · 音乐</a></span></span>
     {% endif %}
-    {% if post.tag == "Design · 设计" %}
-      <span class="post-tag"><span class="tag-design"><a href="{{ site.baseurl }}/tags/design">{{ post.tag }}</a></span></span>
+    {% if post.tag == "design" %}
+      <span class="post-tag"><span class="tag-design"><a href="{{ site.baseurl }}/tags/design">Design · 设计</a></span></span>
     {% endif %}
-    {% if post.tag == "Reading · 读书" %}
-      <span class="post-tag"><span class="tag-reading"><a href="{{ site.baseurl }}/tags/reading">{{ post.tag }}</a></span></span>
+    {% if post.tag == "reading" %}
+      <span class="post-tag"><span class="tag-reading"><a href="{{ site.baseurl }}/tags/reading">Reading · 读书</a></span></span>
     {% endif %}
-    {% if post.tag == "Movie · 电影" %}
-      <span class="post-tag"><span class="tag-movie"><a href="{{ site.baseurl }}/tags/movie">{{ post.tag }}</a></span></span>
+    {% if post.tag == "movie" %}
+      <span class="post-tag"><span class="tag-movie"><a href="{{ site.baseurl }}/tags/movie">Movie · 电影</a></span></span>
     {% endif %}
-    {% if post.tag == "Misc · 杂" %}
-      <span class="post-tag"><span class="tag-misc"><a href="{{ site.baseurl }}/tags/misc">{{ post.tag }}</a></span></span>
+    {% if post.tag == "misc" %}
+      <span class="post-tag"><span class="tag-misc"><a href="{{ site.baseurl }}/tags/misc">Misc · 杂</a></span></span>
     {% endif %}
 
     <span class="post-date">{{ post.date | date_to_string }}</span>
@@ -41,7 +41,10 @@ title: Home
     <a href="{{ post.url }}">
       More...
     </a>
-
+    <div>
+      <br/>
+      <br/>
+    </div>
   </div>
   {% endfor %}
 </div>

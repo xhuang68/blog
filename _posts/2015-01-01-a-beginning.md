@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Beginning
-tag: Misc · 杂
+tag: misc
 ---
 
 This is my first article in this blog.

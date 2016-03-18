@@ -1,7 +1,7 @@
 ---
 layout: post
 title: My favorite podcasts
-tag: Misc · 杂
+tag: misc
 ---
 
 * [Accidental Tech Podcast](http://atp.fm)  

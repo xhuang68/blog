@@ -1,10 +1,10 @@
 ---
 layout: post
 title: 东京物语 · Tokyo Story
-tag: Movie · 电影
+tag: movie
 ---
 
-![Tokyo Story]({{ site.baseurl }}/img/ts.jpg)
+![Tokyo Story]({{ site.baseurl }}/img/20151007/1.jpg)
 
 看了这部1953年的老电影。一开始还不太习惯黑白色调和那个时候略显『僵硬』的演技，但是整部影片绝对不令人失望。
 讲述了六十年前的日本，讲述了爱，亲情，战争，生老病死，距离远近和孤独。在这六十年里，城市发生了翻天覆地的变化，

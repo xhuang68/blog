@@ -1,7 +1,7 @@
 ---
 layout: post
 title: 在 markdown 中使用网易云音乐外链播放器
-tag: Tech · 技术
+tag: tech
 ---
 
 ### 概述  
