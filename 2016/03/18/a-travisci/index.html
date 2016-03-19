@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+  <head>
+  <link href="http://gmpg.org/xfn/11" rel="profile">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <!-- Enable responsiveness on mobile devices-->
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+
+  <title>
+    
+      静态页面生成器装备持续集成 · 下 &middot; Xiao
+    
+  </title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="/public/font-awesome-4.4.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="/public/css/poole.css">
+  <link rel="stylesheet" href="/public/css/syntax.css">
+  <link rel="stylesheet" href="/public/css/lanyon.css">
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=PT+Serif:400,400italic,700%7CPT+Sans:400">
+
+  <!-- Icons -->
+  <link rel="apple-touch-icon-precomposed" sizes="144x144" href="/public/apple-touch-icon-precomposed.png">
+  <link rel="shortcut icon" href="/public/favicon.ico">
+
+  <!-- RSS -->
+  <link rel="alternate" type="application/rss+xml" title="RSS" href="/atom.xml">
+</head>
+
+
+  <body>
+
+    <!-- Target for toggling the sidebar `.sidebar-checkbox` is for regular
+     styles, `#sidebar-checkbox` for behavior. -->
+<input type="checkbox" class="sidebar-checkbox" id="sidebar-checkbox">
+
+<!-- Toggleable sidebar -->
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-item">
+    <p>Stay hungry. Stay foolish.<br/>半路出家，自学还未成才。</p>
+  </div>
+
+  <nav class="sidebar-nav">
+    <a class="sidebar-nav-item" href="/"><i class="fa fa-home fa-fw"></i><span style="margin-left:2em">Home</span></a>
+
+  <!--
+    
+
+    
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+    
+      
+        
+      
+    
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+      
+        
+      
+    
+  -->
+
+    <a class="sidebar-nav-item" href="/archive"><i class="fa fa-archive fa-fw"></i><span style="margin-left:2em">Achive</span></a>
+    <a class="sidebar-nav-item" href="/tag"><i class="fa fa-tags fa-fw"></i><span style="margin-left:2em">Tags</span></a>
+    <a class="sidebar-nav-item" href="/about"><i class="fa fa-user fa-fw"></i><span style="margin-left:2em">About</span></a>
+    <a class="sidebar-nav-item" href="http://xiaohuang.me"><i class="fa fa-paperclip fa-fw"></i><span style="margin-left:2em">Resume</span></a>
+    <a class="sidebar-nav-item" href="https://github.com/xhuang68/xhuang68.github.io"><i class="fa fa-cog fa-spin fa-fw"></i><span style="margin-left:2em">Source</span></a>
+  </nav>
+
+  <div class="sidebar-item">
+    <p>&copy; 2016 Xiao Huang. <br/>All rights reserved.</p>
+  </div>
+</div>
+
+
+    <!-- Wrap is the content to shift when toggling the sidebar. We wrap the
+         content to avoid any CSS collisions with our real content. -->
+    <div class="wrap">
+      <div class="masthead">
+        <div class="container">
+          <h3 class="masthead-title">
+            <a href="/" title="Home">Xiao</a>
+            <small>黄</small>
+          </h3>
+        </div>
+      </div>
+
+      <div class="container content">
+        <div class="post">
+  <h1 class="post-title">静态页面生成器装备持续集成 · 下</h1>
+  
+    <span class="post-tag"><span class="tag-tech"><a href="/tags/tech">Tech · 技术</a></span></span>
+  
+  
+  
+  
+  
+  
+  
+  <span class="post-date">18 Mar 2016</span>
+  <p>之前的两篇文章已经理顺了思路，实现起来也就容易不少。每个步骤网上都能查阅到相当多的资料，这里简单记录一下我的过程。</p>
+
+<!--more-->
+
+<h3 id="dev-repo--pages-repo"><strong>准备 Dev repo 和 Pages repo</strong></h3>
+
+<p>这一步实际上就是在 GitHub 上建立起对应的代码库，我这里选择的是在统一代码库下建立 dev 和 gh-pages 两个 branch，回忆一下，如果是 User site 负责部署的 branch 应该是 master。</p>
+
+<h3 id="jekyll"><strong>准备 Jekyll</strong></h3>
+
+<p>在 dev 分支上安装 Jekyll 或者其他框架所需要的基本文件，包括主题、日志等，然后提交。这里有 <a href="https://jekyllrb.com/docs/home/">Jekyll 安装文档</a> 和 <a href="https://hexo.io/docs/">Hexo 安装文档</a>。</p>
+
+<h3 id="travis-ci"><strong>准备 Travis CI</strong></h3>
+
+<p>在 Travis CI 官网进行登录，选择自己需要的 GitHub 代码库进行同步，并且打开此代码库的 <code class="highlighter-rouge">Build only if .travis.yml is present</code> 设置选项。此时准备工作基本就绪，只需要在 dev 分支上进行 .travis.yml 文件的配置然后 commit 和 push，即可开启整个工作流。</p>
+
+<h3 id="travisyml-"><strong>配置 .travis.yml 文件</strong></h3>
+
+<p>Travis 的配置文件主要有三个内容：告诉 Travis CI 的虚拟机建立什么样的语言环境；告诉此虚拟机安装哪些依赖来构建合理的编译环境；告诉虚拟机执行哪些脚本来对框架进行编译构建以及部署。其中还涉及到一个非常重要的问题，即是赋予虚拟机对于 GitHub 代码库进行有限操作的权限。</p>
+
+<p><strong>权限</strong></p>
+
+<p>我们当然不会把 GitHub 的账号密码明文地放到 .travis.yml 文档里秀给大家看，所以给 Travis CI 授权一般有两种方式：</p>
+
+<ol>
+  <li>通过 SSH key 配置加密私钥，再通过配置 push 时的 SSH 来授权 Travis 对 GitHub 的访问。这个方法的具体实现可以参见这篇文章：<a href="https://zespia.tw/blog/2015/01/21/continuous-deployment-to-github-with-travis/">用 Travis CI 自動部署網站到 GitHub</a>, 这篇文章同样也详细介绍了如何为 Hexo 配置 .travis.yml 文件。</li>
+  <li>通过 GitHub 的 <a href="https://github.com/settings/tokens">Personal Access Token</a> 来对 Travis CI 进行授权。我采用的就是这种方式。</li>
+</ol>
+
+<p><strong>.travis.yml</strong></p>
+
+<p>我配置 Travis 的具体步骤如下：</p>
+
+<ul>
+  <li>在 GitHub 新建一个 Personal Access Token, 命名可以类似 <code class="highlighter-rouge">Travis deployment for repo &lt;YOUR_REPO&gt;</code>.</li>
+  <li>在本地安装 Travis: <code class="highlighter-rouge">gem install travis</code></li>
+  <li>配置 Genfile，告知 Travis 虚拟机安装指定程序及依赖。我的 Gemfile 内容如下，之后虚拟机会自动从源下载并安装文件中的程序及依赖：</li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="nb">source</span> <span class="s2">"https://rubygems.org"</span>
+
+gem <span class="s2">"jekyll"</span>
+gem <span class="s2">"jekyll-paginate"</span></code></pre></figure>
+
+<ul>
+  <li>为你的代码库新建 .travis.yml 文件，我的文件内容如下：</li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-shell" data-lang="shell">language: ruby
+rvm:
+- 2.2
+
+bundler_args: <span class="s1">''</span>
+
+branches:
+  only:
+  - dev
+
+before_install:
+- git config --global user.name <span class="s2">"Travis CI"</span>
+- git config --global user.email <span class="k">${</span><span class="nv">EMAIL</span><span class="k">}</span>
+
+script:
+- bundle <span class="nb">exec </span>jekyll build
+
+after_success:
+- git clone https://<span class="nv">$GITHUB_REPO</span>
+- <span class="nb">cd</span> <span class="k">$(</span>basename <span class="k">${</span><span class="nv">GITHUB_REPO</span><span class="p">%.git</span><span class="k">})</span>
+- rsync -az --delete --exclude <span class="s1">'.git*'</span> ../_site/ .
+- touch .nojekyll
+- git add -A .
+- git commit -m <span class="s2">"Generated Jekyll site by Travis CI - </span><span class="k">${</span><span class="nv">TRAVIS_BUILD_NUMBER</span><span class="k">}</span><span class="s2">"</span>
+- git push --force <span class="s2">"https://</span><span class="k">${</span><span class="nv">DEPLOY_KEY</span><span class="k">}</span><span class="s2">@</span><span class="k">${</span><span class="nv">GITHUB_REPO</span><span class="k">}</span><span class="s2">"</span> HEAD:<span class="k">${</span><span class="nv">REPO_TARGET_BRANCH</span><span class="k">}</span>
+
+env:
+  global:
+  - <span class="nv">NOKOGIRI_USE_SYSTEM_LIBRARIES</span><span class="o">=</span><span class="nb">true</span>
+  - GITHUB_REPO: github.com/YOUR_USERNAME/YOUR_REPO_NAME.git
+  - REPO_TARGET_BRANCH: master
+  - GH_REF: github.com/YOUR_USERNAME/YOUR_REPO_NAME.git</code></pre></figure>
+
+<p>这个文件当中， <code class="highlighter-rouge">language</code> 和 <code class="highlighter-rouge">rvm</code> 设置了 Travis 虚拟机的语言配置环境及版本，<code class="highlighter-rouge">branches</code> 说明了 Travis 仅能操作 dev 分支。接下来三部分的脚本分别是安装制定程序前对 Travis git 的配置，安装后执行的测试脚本，测试脚本成功后的操作指令（发布到网页的指定分支）。</p>
+
+<ul>
+  <li>利用 Travis 的 secret 属性来加密你的 Email 和新建的 Token，并且添加到 .travis.yml 文件中:</li>
+</ul>
+
+<figure class="highlight"><pre><code class="language-shell" data-lang="shell"><span class="c"># fill with Github verified email address
+</span>
+<span class="gp">$ </span>travis encrypt <span class="nv">EMAIL</span><span class="o">=</span>me@domain.com --add  
+
+<span class="c"># fill with your personal access token
+</span>
+<span class="gp">$ </span>travis encrypt <span class="nv">DEPLOY_KEY</span><span class="o">=</span>token --add  </code></pre></figure>
+
+<ul>
+  <li>把上面文档中的 <code class="highlighter-rouge">GITHUB_REPO</code> 和 <code class="highlighter-rouge">REPO_TARGET_BRANCH</code> 更换成你自己的代码库和需要更新的 branch.</li>
+  <li>Commit and push. Travis 便会自动发现 commit, 编译项目，在 push 回指定分支，完成部署。大功告成！</li>
+</ul>
+
+<h3 id="section"><strong>参考</strong></h3>
+
+<ul>
+  <li><a href="http://nick-dunn.co.uk/blog/jekyll-github-travis-ci-sitting-in-a-tree/">Jekyll + Github pages + Travis CI, sitting in a tree</a></li>
+  <li><a href="https://gist.github.com/domenic/ec8b0fc8ab45f39403dd">Auto-deploying built products to gh-pages with Travis</a></li>
+</ul>
+
+</div>
+
+<div class="PageNavigation">
+  
+    <a class="prev" href="/2016/03/17/b-travisci/">&laquo; 静态页面生成器装备持续集成 · 中</a>
+  
+  
+</div>
+
+<div class="related">
+  <h3 style="font-size:90%">Latest Posts</h3>
+  <ul class="related-posts">
+    
+      <li>
+        <h3>
+          <a href="/2016/03/17/b-travisci/">
+            静态页面生成器装备持续集成 · 中
+            <small>17 Mar 2016</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2016/03/17/a-travisci/">
+            静态页面生成器装备持续集成 · 上
+            <small>17 Mar 2016</small>
+          </a>
+        </h3>
+      </li>
+    
+      <li>
+        <h3>
+          <a href="/2016/03/16/b-jekyll/">
+            Jekyll 大括号 {% %} 转义
+            <small>16 Mar 2016</small>
+          </a>
+        </h3>
+      </li>
+    
+  </ul>
+</div>
+
+<div id="disqus_thread"></div>
+<script>
+    /**
+     *  RECOMMENDED CONFIGURATION VARIABLES: EDIT AND UNCOMMENT THE SECTION BELOW TO INSERT DYNAMIC VALUES FROM YOUR PLATFORM OR CMS.
+     *  LEARN WHY DEFINING THESE VARIABLES IS IMPORTANT: https://disqus.com/admin/universalcode/#configuration-variables
+     */
+
+    var disqus_config = function () {
+        this.page.url = page.url;  // Replace PAGE_URL with your page's canonical URL variable
+        this.page.identifier = page.id; // Replace PAGE_IDENTIFIER with your page's unique identifier variable
+    };
+
+    (function() {  // DON'T EDIT BELOW THIS LINE
+        var d = document, s = d.createElement('script');
+
+        s.src = '//xiaohuang.disqus.com/embed.js';
+
+        s.setAttribute('data-timestamp', +new Date());
+        (d.head || d.body).appendChild(s);
+    })();
+</script>
+<noscript>Please enable JavaScript to view the <a href="https://disqus.com/?ref_noscript" rel="nofollow">comments powered by Disqus.</a></noscript>
+
+      </div>
+    </div>
+
+    <label for="sidebar-checkbox" class="sidebar-toggle"></label>
+
+    <script>
+      (function(document) {
+        var toggle = document.querySelector('.sidebar-toggle');
+        var sidebar = document.querySelector('#sidebar');
+        var checkbox = document.querySelector('#sidebar-checkbox');
+
+        document.addEventListener('click', function(e) {
+          var target = e.target;
+
+          if(!checkbox.checked ||
+             sidebar.contains(target) ||
+             (target === checkbox || target === toggle)) return;
+
+          checkbox.checked = false;
+        }, false);
+      })(document);
+    </script>
+  </body>
+</html>
